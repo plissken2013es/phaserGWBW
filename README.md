@@ -1,2 +1,2 @@
 # phaserGWBW
-demo phaser GWBW project
+Demo project featuring a GWBW Phaser clone project
