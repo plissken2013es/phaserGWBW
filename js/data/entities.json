@@ -2,6 +2,23 @@
     "entities": 
     [
         {
+            "name":     "dialogbox",
+            "x":        0,
+            "y":        -45,
+            "z":        662,
+            "anims":    [
+                {
+                    "name":     "idle",
+                    "frames":   [0],
+                    "rate":     0,
+                    "loop":     false
+                }
+            ],
+            "start":    "idle",
+            "init":     "dialogbox_init",
+            "update":   "dialogbox_update"
+        },
+        {
             "name":     "water",
             "x":        6,
             "y":        84,

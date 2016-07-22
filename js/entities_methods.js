@@ -1,4 +1,50 @@
 GWBW.entities_methods = {
+    dialogbox_init: function() {
+        this.name = "Sgt Burden";
+        this.text = "Everything OK?";
+        
+        this.isAnimated = false;
+        
+        this.nameTxt = this.gameLink.add.bitmapText(this.x + 6, this.y + 6, "minecraft", this.name, 8);
+        this.nameTxt.smoothed = false;
+        this.nameTxt.tint = 0x00ff00;
+        this.nameTxt.align = "left";
+        this.nameTxt.z = 663;
+
+        this.blinkTxt = this.gameLink.add.bitmapText(this.gameLink.world.width - 15, this.y + this.height - 20, "minecraft", "...", 8);
+        this.blinkTxt.smoothed = false;
+        this.blinkTxt.tint = 0xffffff;
+        this.blinkTxt.align = "right";
+        this.blinkTxt.z = 664;
+        
+        this.mainTxt = this.gameLink.add.bitmapText(this.x + 11, this.y + 17, "minecraft", this.text, 8);
+        this.mainTxt.smoothed = false;
+        this.mainTxt.tint = 0xffffff;
+        this.mainTxt.align = "left";
+        this.mainTxt.z = 665;
+        
+        this.blinkTimer = this.gameLink.time.create();
+        this.blinkTimer.loop(800, function() {
+            this.blinkTxt.visible = this.blinkTxt.visible ? false : true;
+        }, this);
+        this.blinkTimer.start();
+    },
+    dialogbox_update: function() {
+        if (this.isAnimated) {
+            this.nameTxt.y = this.y + 6;
+            this.blinkTxt.y = this.y + this.height - 20;
+            this.mainTxt.y = this.y + 17;
+        }
+        if (this.y >= 0) {
+            if (this.gameLink.input.mousePointer.justPressed()) {
+                this.isAnimated = true;
+                this.gameLink.add.tween(this).to({ y: -this.height }, 800, Phaser.Easing.Quadratic.Out, true)
+                    .onComplete.add(function() {
+                        this.isAnimated = false;
+                    }, this);
+            }
+        }
+    },
     planet1_update: function() {
         this.x = 170 + this.game.state.getCurrentState().day;
     },
@@ -35,7 +81,7 @@ GWBW.entities_methods = {
     },
     burden_update: function() {
         if (this.animations.currentAnim != this.animations.shoot) {
-            if (this.gameLink.input.mousePointer.leftButton.isDown) {
+            if (this.gameLink.input.mousePointer.isDown && !this.gameLink.options.length && this.gameLink.dialogbox.y < -this.gameLink.dialogbox.height/2) {
                 this.target = this.gameLink.input.mousePointer.x;
                 if (this.x > this.target) {
                     this.body.velocity.x = -this.speed;
