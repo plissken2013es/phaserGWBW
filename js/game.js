@@ -5,7 +5,7 @@ GWBW.Game.prototype = {
         this.fadeAlpha = { value: 1 };
         
         this.entities = [];
-        this.buttons = [];
+        this.buttons = {};
         
         this.SOLDIER_ID     = 0;
         this.DOCTOR_ID      = 1;
@@ -38,50 +38,50 @@ GWBW.Game.prototype = {
         this.ammo = 26;
         this.dialogues = [
             [
-                'No subestimes el hambre, mantén el campamento provisto de comida\ny seremos capaces de afrontar cualquier amenaza.', 
-                'Marvin es un cazador excelente, pero donde se ponga un rifle...\nEn cualquier caso: adoro a este perro.', 
+                'No subestimes el hambre, mantén el campamento provisto de comida \n y seremos capaces de afrontar cualquier amenaza.', 
+                'Marvin es un cazador excelente, pero donde se ponga un rifle... \n En cualquier caso: adoro a este perro.', 
                 'Somos demasiadas bocas. Nuestras provisiones no durarán mucho.', 
-                'No pierdas de vista la munición: no sólo sirve para cazar,\ntambién para defendernos de las amenazas.', 
-                'El perro se llama Marvin por un camarada que perdí\nen los campos de hidrofósforo, fue una batalla brutal...',
-                'Sé que hay alimañas al acecho,\nsomos un plato demasiado apetitoso para ellas...',
-                '¿Y ahora...? Ahora vamos a esperar...\na ver qué pasa...',
+                'No pierdas de vista la munición: no sólo sirve para cazar, \n también para defendernos de las amenazas.', 
+                'El perro se llama Marvin por un camarada que perdí \n en los campos de hidrofósforo, fue una batalla brutal...',
+                'Sé que hay alimañas al acecho, \n somos un plato demasiado apetitoso para ellas...',
+                '¿Y ahora...? Ahora vamos a esperar... \n a ver qué pasa...',
                 'Entre nosotros; ese científico cabrón me da mala espina.'
             ],
             [
-                'Estamos demasiado expuestos al virus Medusea aquí. Mantente alerta,\nsi algunos de nosotros se paraliza, morirá en 3 días.', 
-                'Creo que alguien infectado por el virus Medusea se congela\na nivel fisiológico y no necesita comida ni atención psicológica.', 
-                'Es un cigarro digital infinito: es inofensivo\ny sabe igual que los de antes.', 
-                'Los cadáveres infectados por el virus Medusea son altamente\ncontagiosos. Deberíamos quemarlos si llega el momento.', 
-                'Espero que en caso de emergencia el perro caiga\nantes que un humano, ¿no?',
-                'El tabaco me ayuda a estar entretenido y, de paso,\nme olvido del hambre.',
-                'Si llega la hora de la verdad... mejor vosotros\nantes que yo.',
-                'Si estoy fuera una película americana de los 90\nyo sería el primero en morir. Soy un arquetipo.'
+                'Estamos demasiado expuestos al virus Medusea aquí. Mantente alerta, \n si algunos de nosotros se paraliza, morirá en 3 días.', 
+                'Creo que alguien infectado por el virus Medusea se congela \n a nivel fisiológico y no necesita comida ni atención psicológica.', 
+                'Es un cigarro digital infinito: es inofensivo \n y sabe igual que los de antes.', 
+                'Los cadáveres infectados por el virus Medusea son altamente \n contagiosos. Deberíamos quemarlos si llega el momento.', 
+                'Espero que en caso de emergencia el perro caiga \n antes que un humano, ¿no?',
+                'El tabaco me ayuda a estar entretenido y, de paso, \n me olvido del hambre.',
+                'Si llega la hora de la verdad... mejor vosotros \n antes que yo.',
+                'Si estoy fuera una película americana de los 90 \n yo sería el primero en morir. Soy un arquetipo.'
             ],
             [
-                'Puedo trabajar en la radio, pero creo que llevará unos\n15 días arreglarla.', 'Soldado, Doctor, Yo y Sarah: ése es el orden de las\nlecturas psicológicas de BR4ND-0N. Cuanto mayores las bajas, peor.', 
-                'Sarah y yo llevamos casados 7 años, ella es genial.\nSeguro que nos ayudará a superar esto.', 
-                'Si tienes que tomar una decisión difícil, llévame antes que a ella,\npor favor. BR4ND-0N puede continuar mi trabajo perfectamente.', 
-                'Sé que no le caigo bien al Soldado,\nespero que no haga nada estúpido...',
-                'Mis análisis indican que tenemos pocas probabilidades\nde salir todos con vida de ésta.',
+                'Puedo trabajar en la radio, pero creo que llevará unos \n 15 días arreglarla.', 'Soldado, Doctor, Yo y Sarah: ése es el orden de las \n lecturas psicológicas de BR4ND-0N. Cuanto mayores las bajas, peor.', 
+                'Sarah y yo llevamos casados 7 años, ella es genial. \n Seguro que nos ayudará a superar esto.', 
+                'Si tienes que tomar una decisión difícil, llévame antes que a ella, \n por favor. BR4ND-0N puede continuar mi trabajo perfectamente.', 
+                'Sé que no le caigo bien al Soldado, \n espero que no haga nada estúpido...',
+                'Mis análisis indican que tenemos pocas probabilidades \n de salir todos con vida de ésta.',
                 'Usted es el líder, Burden, debe decidir.',
-                'En cuanto salgamos de esta roca absurda, me voy a comer\nuna hamburguesa triple de buey de Kobe.'
+                'En cuanto salgamos de esta roca absurda, me voy a comer \n una hamburguesa triple de buey de Kobe.'
             ],
             [
-                'Confiamos en usted, Sargento. La moral es crucial en estos casos.\nIntente mantener la moral del equipo hablando con ellos.', 
-                'Si alguien del grupo muere, la moral descenderá drásticamente.\nDependiendo de quien sea, unos se verán más afectados que otros.', 
-                'No dejes que muera Marvin, todos lo queremos mucho.\nSería un duro golpe para la moral del campamento.', 
+                'Confiamos en usted, Sargento. La moral es crucial en estos casos. \n Intente mantener la moral del equipo hablando con ellos.', 
+                'Si alguien del grupo muere, la moral descenderá drásticamente. \n Dependiendo de quien sea, unos se verán más afectados que otros.', 
+                'No dejes que muera Marvin, todos lo queremos mucho. \n Sería un duro golpe para la moral del campamento.', 
                 'Donald no es muy carismático, pero tiene un gran corazón.', 
-                'Este libro habla sobre un chico que liberó la antigua Tierra\ncon solo un ordenador. Se titula: "La Leyenda del Keymasher".',
-                'Una reunión conmigo en situaciones límite puede levantar la moral.\nSin embargo, la sesión lleva un rato.',
-                'No hay mucho más que hacer en esta roca que leer,\n¿no cree?'
+                'Este libro habla sobre un chico que liberó la antigua Tierra \n con solo un ordenador. Se titula: "La Leyenda del Keymasher".',
+                'Una reunión conmigo en situaciones límite puede levantar la moral. \n Sin embargo, la sesión lleva un rato.',
+                'No hay mucho más que hacer en esta roca que leer, \n ¿no cree?'
             ],
             [
-                'Una hoguera que debe durar 40 días, ¿eh?\nLo tomaré como una metáfora. No sucumbiremos.', 
-                '¿Debería guardarme una bala para mí?\nVenga, no pienses en eso...', 
+                'Una hoguera que debe durar 40 días, ¿eh? \n Lo tomaré como una metáfora. No sucumbiremos.', 
+                '¿Debería guardarme una bala para mí? \n Venga, no pienses en eso...', 
                 'El perro parece sabroso...', 
-                'El Ingeniero está muy gordo, podría convertirse en un montón\nde comida.', 
-                'Las piezas de BR4ND-0N podrían usarse para recargar\nla munición láser.', 
-                'Esta zona esta habitada por depredadores.\nDeberíamos ahorrar munición para repelerlos.', 
+                'El Ingeniero está muy gordo, podría convertirse en un montón \n de comida.', 
+                'Las piezas de BR4ND-0N podrían usarse para recargar \n la munición láser.', 
+                'Esta zona esta habitada por depredadores. \n Deberíamos ahorrar munición para repelerlos.', 
                 'Si escapo de este planeta, me apuntaré a la próxima Ludum Dare.', 
                 'Estoy cansado de comer carne. Unos buenos "cachelos" estarían genial.'
             ]
@@ -117,6 +117,11 @@ GWBW.Game.prototype = {
         this.game.canvas.antialias = false;
     },
     create: function() {
+        // shuffle dialogues
+        for (var q=0; q<4; q++) {
+            this.dialogues[q] = Phaser.ArrayUtils.shuffle(this.dialogues[q]);
+        }
+        
         // create fade object
         this.fade = this.game.add.graphics(0, 0);
         this.fade.z = 500;
@@ -130,7 +135,15 @@ GWBW.Game.prototype = {
         this.countdownTxt.smoothed = false;
         this.countdownTxt.tint = 0xffffff;
         this.countdownTxt.align = "center";
-        this.countdownTxt.z = 501;
+        this.countdownTxt.z = 550;
+        
+        // create actions bitmapText
+        this.actionsTxt = this.add.bitmapText(this.world.width - 40, this.world.height - 15, "minecraft", "Acciones: " + this.numActions, 10);
+        this.actionsTxt.anchor.x = 0.5;
+        this.actionsTxt.smoothed = false;
+        this.actionsTxt.tint = 0xffffff;
+        this.actionsTxt.align = "center";
+        this.actionsTxt.z = 551;
         
         // create hover bitmapText
         this.hoverTxt = this.add.bitmapText(this.world.centerX, this.world.centerY/2, "minecraft", "", 10);
@@ -151,6 +164,7 @@ GWBW.Game.prototype = {
         // add sound effects
         this.stepsSnd = this.add.audio("stepsSnd", 0.1, true);
         this.campfireSnd = this.add.audio("campfireSnd", 0.2, true);
+        this.laserSnd = this.add.audio("laserSnd", 0.4);
         
         // add entities
         this.addEntities();
@@ -162,7 +176,7 @@ GWBW.Game.prototype = {
         this.add.tween(this.fadeAlpha).to({value: 0}, 2000, Phaser.Easing.Quadratic.InOut, true)
             .onComplete.add(function() {
                 this.countdownTxt.text = "";
-            }, this);;
+            }, this);
     },
     update: function() {
         this.crosshair.x = Math.floor(this.input.mousePointer.x - 8);
@@ -170,18 +184,51 @@ GWBW.Game.prototype = {
         this.hoverTxt.x = this.crosshair.x + 8;
         this.hoverTxt.y = this.crosshair.y - 12;
         
+        // update entities
         for (var q=0, l=this.entities.length; q<l; q++) {
             if (this.entities[q].custom_update) this.entities[q].custom_update();
         }
         
-        for (q=0, l=this.buttons.length; q<l; q++) {
-            this.hoverTxt.text = "";
-            if (!this.isOver && this.day < 40 && this.numActions > 0 && this.dialogbox.y <= -this.dialogbox.height/2 && !this.options.length && this.buttons[q].overlap(this.crosshair)) {
-                if (!this.options.length && this.input.mousePointer.isDown) this.createOptionsFor(this.buttons[q]);
-                this.hoverTxt.text = this.buttons[q].hoverTxt;
+        // manage options displayed on screen, if they exist
+        for (q=0, l=this.options.length; q<l; q++) {
+            this.options[q].txt.tint = 0x00ff00;
+        }
+        for (q=0, l=this.options.length; q<l; q++) {
+            if (!this.isOver && this.day < 40 && this.numActions > 0 && this.dialogbox.y <= -this.dialogbox.height/2 && this.options.length && this.options[q].img.overlap(this.crosshair)) {
+                this.options[q].txt.tint = 0xffff00;
+                if (this.options.length && this.input.mousePointer.isDown && this.optionsEntity && this.optionsEntity.tweenFinished) {
+                    this.options[q].txt.action.call(this);
+                }
                 break;
             }
         }
+        
+        // destroy options, if user clicks on an empty zone of screen
+        if (this.options.length && this.input.mousePointer.isDown && this.optionsEntity && this.optionsEntity.tweenFinished) {
+            this.optionsEntity.destroy();
+            
+            var timerTmp = this.time.create(false);
+            timerTmp.add(500, function() {
+                this.optionsEntity = null;
+            }, this);
+            timerTmp.start();
+        }
+        // manage actions
+        for (var prop in this.buttons) {
+            var btn = this.buttons[prop];
+            this.hoverTxt.text = "";
+            if (!this.isOver && this.day < 40 && this.numActions > 0 && this.dialogbox.y <= -this.dialogbox.height/2 && !this.options.length && btn.overlap(this.crosshair)) {
+                if (!this.options.length && this.input.mousePointer.isDown && !this.optionsEntity) {
+                    this.optionsEntity = new GWBW.Option(this, btn);
+                    this.optionsEntity.createOptionsFor(btn);
+                }
+                this.hoverTxt.text = btn.hoverTxt;
+                break;
+            }
+        }
+        
+        // update actions text
+        this.actionsTxt.text = "Acciones: " + this.numActions;
         
         this.world.sort("z", Phaser.Group.SORT_ASCENDING);
     },
@@ -233,28 +280,7 @@ GWBW.Game.prototype = {
             this[action._name].gameLink = this.game.state.getCurrentState();
             this[action._name].z = 250 + q;
             
-            this.buttons.push(this[action._name]);
-        }
-    },
-    createOptionsFor: function(btn) {
-        if (btn.infected) {
-            for (var i=0; i < btn.infections.length; i++) {
-                var txt = this.add.bitmapText(this.input.mousePointer.x - 20, this.input.mousePointer.y - 40 + i * 20, "minecraft", btn.infections[i].text, 10);
-                txt.smoothed = false;
-                txt.tint = 0x00ff00;
-                txt.z = 200 + i;
-                txt.action = btn.infections[i].action;
-                this.options.push(txt);
-            }
-        } else {
-            for (var i=0; i < btn.options.length; i++) {
-                var txt = this.add.bitmapText(this.input.mousePointer.x - 20, this.input.mousePointer.y - 40 + i * 20, "minecraft", btn.options[i].text, 10);
-                txt.smoothed = false;
-                txt.tint = 0x00ff00;
-                txt.z = 200 + i;
-                txt.action = btn.options[i].action;
-                this.options.push(txt);
-            }
+            this.buttons[action._name] = this[action._name];
         }
     },
     formatActionObject: function(obj) {
@@ -270,8 +296,53 @@ GWBW.Game.prototype = {
         }
         return obj;
     },
+    shootCrew: function(id) {
+        this.burden.play("shoot");
+        this.laserSnd.play();
+
+        var member = this[this.CREW_ENTITIES[id]];
+        member.play("die");
+        
+        var name = this.CREW_ENTITIES[id] + "Action";
+        var action = this[name];
+        delete this.buttons[name];
+        action.destroy();
+
+        // gain food or bullets
+        if (id == this.ROBOT_ID) {
+            this.ammo += this.MEMBER_WEIGHT[id];
+        } else {
+            this.foodAmount += this.MEMBER_WEIGHT[id];
+        }
+
+        this.sufferMoralePunch(id);
+
+        this.rationsNeeded --;
+        this.numActions --;
+        this.numSurvivors --;
+    },
+    sufferMoralePunch: function(id) {
+        var moralePunch = this.MORALE_PUNCH[id];
+        for (var q=0; q<4; q++) {
+            if (moralePunch[q] == -100) {
+                this.sanity[q] = -100;
+            } else {
+                this.sanity[q] += moralePunch[q];
+            }
+        }
+    },
     startMusic: function() {
         this.music.play();
         this.music.fadeTo(6000, 0.25);
+    },
+    tweenDialog: function(pos, time, callback) {
+        time = time * 1000;
+        var anim = this.add.tween(this.dialogbox);
+        anim.to({y: pos.y}, time, Phaser.Easing.Quadratic.Out);
+        if (callback) {
+            anim.onComplete.add(callback, this);
+        }
+        this.dialogbox.isAnimated = true;
+        anim.start();
     }
 };

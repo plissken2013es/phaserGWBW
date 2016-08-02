@@ -95,7 +95,7 @@ GWBW.action_methods = {
         });
     },
     doctorAction2: function() {
-        var vaccines = this.between(0, 2);
+        var vaccines = this.math.between(0, 2);
         var txt = 'Conozco algunas hierbas de este planeta que podrán sernos útiles.\n';
         if (vaccines) {
             txt += '[¡El Doctor ha preparado ' + vaccines + ' vacuna/s!]';
@@ -259,10 +259,10 @@ GWBW.action_methods = {
     soldierAction2: function() {
         if (this.ammo > 2) {
             this.laserSnd.play();
-            var numShots = this.between(1, 3);
+            var numShots = this.math.between(1, 3);
             this.ammo -= numShots;
             if (Math.random() > .1) {
-                var food = this.between(5, 8);
+                var food = this.math.between(5, 8);
                 this.foodAmount += food;
                 var resultText = 'El soldado ha gastado ' + numShots + ' bala(s) y ha obtenido\n' + food + ' raciones de alimentos.';
                 if (food == 1) resultText = 'El soldado ha gastado ' + numShots + ' bala(s) y ha obtenido\nuna ración de comida.';
@@ -347,7 +347,7 @@ GWBW.action_methods = {
             this.tweenDialog({ y: 0 }, 1, function() {
                 for (var i = 0; i < this.sanity.length; i++) {
                     if (this.sanity[i] >= 0 && !this.infected[i]) {
-                        this.sanity[i] += this.between(1, 3);
+                        this.sanity[i] += this.math.between(1, 3);
                     }
                     if (this.sanity[i] >= 0) this.spokenTo[i] = true;
                 }
@@ -411,7 +411,7 @@ GWBW.action_methods = {
     },
     dogAction2: function() {
         if (Math.random() > .34) {
-            var food = this.between(4, 7);
+            var food = this.math.between(4, 7);
             this.foodAmount += food;
             var resultText = '¡Marvin ha conseguido ' + food + ' raciones de comida!';
             if (food == 1) resultText = '¡Marvin ha conseguido una ración de comida!';

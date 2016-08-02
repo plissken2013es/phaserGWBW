@@ -22,6 +22,7 @@ GWBW.Preload.prototype = {
         this.load.audio("bso", ["watching4.ogg", "watching4.mp3"]);
         this.load.audio("campfireSnd", ["hoguera.ogg", "hoguera.mp3"]);
         this.load.audio("stepsSnd", ["snow_steps.ogg", "snow_steps.mp3"]);
+        this.load.audio("laserSnd", ["laser.ogg", "laser.mp3"]);
         this.load.audio("keyboard", ["keyboard.ogg", "keyboard.mp3"]);
         
         this.load.path = "media/";

@@ -5,19 +5,19 @@ GWBW.entities_methods = {
         
         this.isAnimated = false;
         
-        this.nameTxt = this.gameLink.add.bitmapText(this.x + 6, this.y + 6, "minecraft", this.name, 8);
+        this.nameTxt = this.gameLink.add.bitmapText(this.x + 2, this.y + 1, "minecraft", this.name, 8);
         this.nameTxt.smoothed = false;
         this.nameTxt.tint = 0x00ff00;
         this.nameTxt.align = "left";
         this.nameTxt.z = 663;
 
-        this.blinkTxt = this.gameLink.add.bitmapText(this.gameLink.world.width - 15, this.y + this.height - 20, "minecraft", "...", 8);
+        this.blinkTxt = this.gameLink.add.bitmapText(this.gameLink.world.width - 7, this.y + this.height - 2, "minecraft", "...", 8);
         this.blinkTxt.smoothed = false;
         this.blinkTxt.tint = 0xffffff;
         this.blinkTxt.align = "right";
         this.blinkTxt.z = 664;
         
-        this.mainTxt = this.gameLink.add.bitmapText(this.x + 11, this.y + 17, "minecraft", this.text, 8);
+        this.mainTxt = this.gameLink.add.bitmapText(this.x + 4, this.y + 12, "minecraft", this.text, 7);
         this.mainTxt.smoothed = false;
         this.mainTxt.tint = 0xffffff;
         this.mainTxt.align = "left";
@@ -32,8 +32,10 @@ GWBW.entities_methods = {
     dialogbox_update: function() {
         if (this.isAnimated) {
             this.nameTxt.y = this.y + 6;
+            this.nameTxt.text = this.name;
             this.blinkTxt.y = this.y + this.height - 20;
             this.mainTxt.y = this.y + 17;
+            this.mainTxt.text = this.text;
         }
         if (this.y >= 0) {
             if (this.gameLink.input.mousePointer.justPressed()) {
@@ -80,7 +82,7 @@ GWBW.entities_methods = {
         this.gameLink.physics.arcade.enable(this);
     },
     burden_update: function() {
-        if (this.animations.currentAnim != this.animations.shoot) {
+        if (this.animations.currentAnim != this.animations._anims.shoot) {
             if (this.gameLink.input.mousePointer.isDown && !this.gameLink.options.length && this.gameLink.dialogbox.y < -this.gameLink.dialogbox.height/2) {
                 this.target = this.gameLink.input.mousePointer.x;
                 if (this.x > this.target) {
@@ -107,11 +109,12 @@ GWBW.entities_methods = {
             }
         } else {
             this.body.velocity.x = 0;
-            if (this.frame >= 9) this.play("idle");
+            if (this.animations.currentAnim.isFinished) this.play("idle");
         }
+        
         var flipX = this.flip ? -1 : 1;
         this.scale.set(flipX, 1);
-
+        
         if (this.body.velocity.x && !this.isWalking) {
             this.gameLink.stepsSnd.play();
             this.isWalking = true;
@@ -121,7 +124,7 @@ GWBW.entities_methods = {
         }
     },
     doctor_update: function() {
-        if (this.animations.currentAnim != this.animations.die) {
+        if (this.animations.currentAnim != this.animations._anims.die) {
             if (this.gameLink.infected[this.gameLink.DOCTOR_ID]) {
                 this.play("infected");
             } else {
@@ -133,7 +136,7 @@ GWBW.entities_methods = {
         }
     },
     soldier_update: function() {
-        if (this.animations.currentAnim != this.animations.die) {
+        if (this.animations.currentAnim != this.animations._anims.die) {
             if (this.gameLink.infected[this.gameLink.SOLDIER_ID]) {
                  this.play("infected");
             } else {
@@ -145,7 +148,7 @@ GWBW.entities_methods = {
         }
     },
     scientist_update: function() {
-        if (this.animations.currentAnim != this.animations.die) {
+        if (this.animations.currentAnim != this.animations._anims.die) {
             if (this.gameLink.infected[this.gameLink.SCIENTIST_ID]) {
                  this.play("infected");
             } else {
@@ -157,7 +160,7 @@ GWBW.entities_methods = {
         }
     },
     girl_update: function() {
-        if (this.animations.currentAnim != this.animations.die) {
+        if (this.animations.currentAnim != this.animations._anims.die) {
             if (this.gameLink.infected[this.gameLink.GIRL_ID]) {
                  this.play("infected");
             } else {
