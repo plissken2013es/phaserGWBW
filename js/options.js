@@ -23,9 +23,12 @@ GWBW.Option.prototype = {
     createOptionsFor: function(btn) {
         this.container = this.gameLink.add.group();
         
+        var x = Math.floor(this.gameLink.input.mousePointer.x);
+        var y = Math.floor(this.gameLink.input.mousePointer.y);
+        
         if (btn.infected) {
             for (var i=0; i < btn.infections.length; i++) {
-                var txt = this.gameLink.add.bitmapText(this.gameLink.input.mousePointer.x - 20, this.gameLink.input.mousePointer.y - 20 + i * 18, "minecraft", btn.infections[i].text, 10);
+                var txt = this.gameLink.add.bitmapText(x - 20, y - 20 + i * 18, "minecraft", btn.infections[i].text, 8);
                 if (txt.x + txt.textWidth > this.gameLink.world.width) txt.x -= Math.floor(txt.textWidth/2);
                 
                 txt.smoothed = false;
@@ -35,11 +38,11 @@ GWBW.Option.prototype = {
                 
                 this.addTxtBackground(this.container, {x: txt.x, y: txt.y, w: txt.textWidth, h: txt.textHeight});
                 this.container.add(txt);
-                this.addButtonImage(this.container, {x: txt.x, y: txt.y, w: txt.textWidth, h: txt.textHeight});
+                this.addButtonImage(this.container, {x: txt.x, y: txt.y, w: txt.textWidth, h: txt.textHeight}, txt);
             }
         } else {
             for (var i=0; i < btn.options.length; i++) {
-                var txt = this.gameLink.add.bitmapText(this.gameLink.input.mousePointer.x - 20, this.gameLink.input.mousePointer.y - 20 + i * 18, "minecraft", btn.options[i].text, 10);
+                var txt = this.gameLink.add.bitmapText(x - 20, y - 20 + i * 18, "minecraft", btn.options[i].text, 8);
                 txt.smoothed = false;
                 if (txt.x + txt.textWidth > this.gameLink.world.width) txt.x -= Math.floor(txt.textWidth/2);
                 
@@ -52,10 +55,12 @@ GWBW.Option.prototype = {
                 this.addButtonImage(this.container, {x: txt.x, y: txt.y, w: txt.textWidth, h: txt.textHeight}, txt);
             }
         }
+        this.container.cacheAsBitmap = true;
         
         this.gameLink.add.tween(this.container).to({y: "-7"}, 600, Phaser.Easing.Quadratic.Out, true)
             .onComplete.add(function() {
                 this.tweenFinished = true;
+                this.container.cacheAsBitmap = null;
             }, this);;
     },
     destroy: function() {

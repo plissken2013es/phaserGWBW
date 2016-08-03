@@ -23,12 +23,15 @@ GWBW.Preload.prototype = {
         this.load.audio("campfireSnd", ["hoguera.ogg", "hoguera.mp3"]);
         this.load.audio("stepsSnd", ["snow_steps.ogg", "snow_steps.mp3"]);
         this.load.audio("laserSnd", ["laser.ogg", "laser.mp3"]);
+        this.load.audio("howlSnd", ["growl.ogg", "growl.mp3"]);
+        this.load.audio("roarSnd", ["rugido.ogg", "rugido.mp3"]);
         this.load.audio("keyboard", ["keyboard.ogg", "keyboard.mp3"]);
         
         this.load.path = "media/";
         this.load.images(["fondo", "titulo"]);
         this.load.spritesheet("crosshair", "white_crosshair_16.png", 16, 16);
         this.load.spritesheet("dialogbox", "dialogbox.png", 320, 45);
+        this.load.spritesheet("ship", "nave-137x37.png", 137, 37);
         this.load.spritesheet("cursor", "cursor.png", 10, 13);
         this.load.spritesheet("water", "agua-302x58-6x84.png", 302, 58);
         this.load.spritesheet("planet1", null, 14, 13);

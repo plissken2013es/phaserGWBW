@@ -17,7 +17,7 @@ GWBW.entities_methods = {
         this.blinkTxt.align = "right";
         this.blinkTxt.z = 664;
         
-        this.mainTxt = this.gameLink.add.bitmapText(this.x + 4, this.y + 12, "minecraft", this.text, 7);
+        this.mainTxt = this.gameLink.add.bitmapText(this.x + 4, this.y + 12, "minecraft", this.text, 8);
         this.mainTxt.smoothed = false;
         this.mainTxt.tint = 0xffffff;
         this.mainTxt.align = "left";
@@ -31,10 +31,10 @@ GWBW.entities_methods = {
     },
     dialogbox_update: function() {
         if (this.isAnimated) {
-            this.nameTxt.y = this.y + 6;
+            this.nameTxt.y = Math.floor(this.y) + 6;
+            this.blinkTxt.y = Math.floor(this.y) + this.height - 20;
+            this.mainTxt.y = Math.floor(this.y) + 17;
             this.nameTxt.text = this.name;
-            this.blinkTxt.y = this.y + this.height - 20;
-            this.mainTxt.y = this.y + 17;
             this.mainTxt.text = this.text;
         }
         if (this.y >= 0) {
@@ -82,6 +82,8 @@ GWBW.entities_methods = {
         this.gameLink.physics.arcade.enable(this);
     },
     burden_update: function() {
+        if (this.gameLink.isOver) return;
+        
         if (this.animations.currentAnim != this.animations._anims.shoot) {
             if (this.gameLink.input.mousePointer.isDown && !this.gameLink.options.length && this.gameLink.dialogbox.y < -this.gameLink.dialogbox.height/2) {
                 this.target = this.gameLink.input.mousePointer.x;
@@ -94,10 +96,10 @@ GWBW.entities_methods = {
                 }
                 this.play("walk");
             }
-            if (this.body.velocity.x > 0 && this.x > this.target) {
+            if (this.body.velocity.x > 0 && this.x > this.target - 20) {
                 this.body.velocity.x = 0;
             }
-            if (this.body.velocity.x < 0 && this.x < this.target) {
+            if (this.body.velocity.x < 0 && this.x < this.target + 20) {
                 this.body.velocity.x = 0;
             }
             if (this.x < 39) {

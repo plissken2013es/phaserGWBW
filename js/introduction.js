@@ -39,6 +39,8 @@ GWBW.Introduction.prototype = {
         ];
     },
     create: function() {
+        this.game.context.scale(2, 2);
+        
         this.introLine = this.add.bitmapText(this.world.centerX, 20, "minecraft", "", 9);
         this.introLine.anchor.x = 0.5;
         this.introLine.smoothed = false;
@@ -61,6 +63,26 @@ GWBW.Introduction.prototype = {
         
         this.input.onDown.addOnce(this.showTitle, this);
     },
+    update: function() {
+        if (this.showingTitle) return;
+        
+        if (this.cpos < this.txtArray[this.tpos].length) {
+            if (this.cpos === 3) this.keyboardSnd.play();
+            this.introTxt.text += this.txtArray[this.tpos][this.cpos++];
+            if (this.txtArray[this.tpos][this.cpos]) this.introLine.text += this.txtArray[this.tpos][this.cpos];
+            var h = this.introTxt.textHeight;
+            var w = this.introLine.textWidth;
+            this.consoleCursor.x = (w + this.world.width)/2 + 2;
+            this.consoleCursor.y = h + 8;
+        } else {
+            this.keyboardSnd.stop();
+        }
+        
+        if (this.tpos === this.txtArray.length-1) {
+            this.showTitle();
+        }
+    },
+    // end of mandatory functions -------------------------------
     showTitle: function() {
         this.introLine.kill();
         this.introTxt.text = "(Los dioses estarán vigilando)";
@@ -87,26 +109,6 @@ GWBW.Introduction.prototype = {
         }, this);
         timerTmp.start();
     },
-    update: function() {
-        if (this.showingTitle) return;
-        
-        if (this.cpos < this.txtArray[this.tpos].length) {
-            if (this.cpos === 3) this.keyboardSnd.play();
-            this.introTxt.text += this.txtArray[this.tpos][this.cpos++];
-            if (this.txtArray[this.tpos][this.cpos]) this.introLine.text += this.txtArray[this.tpos][this.cpos];
-            var h = this.introTxt.textHeight;
-            var w = this.introLine.textWidth;
-            this.consoleCursor.x = (w + this.world.width)/2 + 2;
-            this.consoleCursor.y = h + 8;
-        } else {
-            this.keyboardSnd.stop();
-        }
-        
-        if (this.tpos === this.txtArray.length-1) {
-            this.showTitle();
-        }
-    },
-    // end of mandatory functions -------------------------------
     startGame: function() {
         this.state.start("GWBW.Game", true, false, this.music);
     },

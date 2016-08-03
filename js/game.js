@@ -38,7 +38,7 @@ GWBW.Game.prototype = {
         this.ammo = 26;
         this.dialogues = [
             [
-                'No subestimes el hambre, mantén el campamento provisto de comida \n y seremos capaces de afrontar cualquier amenaza.', 
+                'No subestimes el hambre, cuida las provisiones de comida \n y seremos capaces de afrontar cualquier amenaza.', 
                 'Marvin es un cazador excelente, pero donde se ponga un rifle... \n En cualquier caso: adoro a este perro.', 
                 'Somos demasiadas bocas. Nuestras provisiones no durarán mucho.', 
                 'No pierdas de vista la munición: no sólo sirve para cazar, \n también para defendernos de las amenazas.', 
@@ -48,7 +48,7 @@ GWBW.Game.prototype = {
                 'Entre nosotros; ese científico cabrón me da mala espina.'
             ],
             [
-                'Estamos demasiado expuestos al virus Medusea aquí. Mantente alerta, \n si algunos de nosotros se paraliza, morirá en 3 días.', 
+                'Estamos muy expuestos al virus Medusea aquí. Mantente alerta, \n si algunos de nosotros se paraliza, morirá en 3 días.', 
                 'Creo que alguien infectado por el virus Medusea se congela \n a nivel fisiológico y no necesita comida ni atención psicológica.', 
                 'Es un cigarro digital infinito: es inofensivo \n y sabe igual que los de antes.', 
                 'Los cadáveres infectados por el virus Medusea son altamente \n contagiosos. Deberíamos quemarlos si llega el momento.', 
@@ -58,21 +58,22 @@ GWBW.Game.prototype = {
                 'Si estoy fuera una película americana de los 90 \n yo sería el primero en morir. Soy un arquetipo.'
             ],
             [
-                'Puedo trabajar en la radio, pero creo que llevará unos \n 15 días arreglarla.', 'Soldado, Doctor, Yo y Sarah: ése es el orden de las \n lecturas psicológicas de BR4ND-0N. Cuanto mayores las bajas, peor.', 
+                'Puedo trabajar en la radio, pero creo que llevará unos \n 15 días arreglarla.', 
+                'Soldado, Doctor, Yo y Sarah: ése es el orden de las \n lecturas psicológicas de BR4ND-0N. Cuanto mayores las bajas, peor.', 
                 'Sarah y yo llevamos casados 7 años, ella es genial. \n Seguro que nos ayudará a superar esto.', 
-                'Si tienes que tomar una decisión difícil, llévame antes que a ella, \n por favor. BR4ND-0N puede continuar mi trabajo perfectamente.', 
+                'Si tienes que tomar una decisión difícil, yo antes que Sarah, \n por favor. BR4ND-0N puede continuar mi trabajo perfectamente.', 
                 'Sé que no le caigo bien al Soldado, \n espero que no haga nada estúpido...',
                 'Mis análisis indican que tenemos pocas probabilidades \n de salir todos con vida de ésta.',
                 'Usted es el líder, Burden, debe decidir.',
                 'En cuanto salgamos de esta roca absurda, me voy a comer \n una hamburguesa triple de buey de Kobe.'
             ],
             [
-                'Confiamos en usted, Sargento. La moral es crucial en estos casos. \n Intente mantener la moral del equipo hablando con ellos.', 
+                'Confiamos en usted, Burden. La moral es crucial en estos casos. \n Intente mantener la moral del equipo hablando con ellos.', 
                 'Si alguien del grupo muere, la moral descenderá drásticamente. \n Dependiendo de quien sea, unos se verán más afectados que otros.', 
                 'No dejes que muera Marvin, todos lo queremos mucho. \n Sería un duro golpe para la moral del campamento.', 
                 'Donald no es muy carismático, pero tiene un gran corazón.', 
                 'Este libro habla sobre un chico que liberó la antigua Tierra \n con solo un ordenador. Se titula: "La Leyenda del Keymasher".',
-                'Una reunión conmigo en situaciones límite puede levantar la moral. \n Sin embargo, la sesión lleva un rato.',
+                'Una reunión conmigo en situaciones límite puede elevar la moral. \n Sin embargo, la sesión lleva un rato.',
                 'No hay mucho más que hacer en esta roca que leer, \n ¿no cree?'
             ],
             [
@@ -83,7 +84,7 @@ GWBW.Game.prototype = {
                 'Las piezas de BR4ND-0N podrían usarse para recargar \n la munición láser.', 
                 'Esta zona esta habitada por depredadores. \n Deberíamos ahorrar munición para repelerlos.', 
                 'Si escapo de este planeta, me apuntaré a la próxima Ludum Dare.', 
-                'Estoy cansado de comer carne. Unos buenos "cachelos" estarían genial.'
+                'Estoy cansado de comer carne. Unos buenos cachelos \n estarían genial.'
             ]
         ];
         this.dialoguesIndex = [0, 0, 0, 0, 0];
@@ -93,7 +94,18 @@ GWBW.Game.prototype = {
         this.infected = [false, false, false, false, false]; // soldier - doctor - scientist - girl
         this.infectionLevel = [0, 0, 0, 0, 0];
         
-        this.MEMBER_WEIGHT = [17, 15, 21, 12, 0, 30, 10];
+        this.endings = [
+            'Has muerto de hipotermia.', 
+            'Los depredadores salvajes han arrasado tu campamento \n porque no tenías suficiente munición para defenderlo.', 
+            '¡No has sido capaz de contactar con el Convoy Orbital!', 
+            '¡Has logrado huir del planeta!', 
+            'El Sargento Burden ha fallado a sus hombres \n y se ha suicidado.'
+        ];
+        this.end = 3;
+        this.endTitle = "";
+        this.summary = "";
+        
+        this.MEMBER_WEIGHT = [17, 15, 21, 12, 0, 10, 30];
         this.MORALE_PUNCH = [
               [-100,    -1,     0,      -2],
               [-3,      -100,   -1,     -1],
@@ -129,29 +141,7 @@ GWBW.Game.prototype = {
         this.fade.drawRect(0, 0, this.world.width, this.world.height);
         this.fade.endFill();
         
-        // create countdown bitmapText
-        this.countdownTxt = this.add.bitmapText(this.world.centerX, this.world.centerY/2, "minecraft", this.countdown, 10);
-        this.countdownTxt.anchor.x = 0.5;
-        this.countdownTxt.smoothed = false;
-        this.countdownTxt.tint = 0xffffff;
-        this.countdownTxt.align = "center";
-        this.countdownTxt.z = 550;
-        
-        // create actions bitmapText
-        this.actionsTxt = this.add.bitmapText(this.world.width - 40, this.world.height - 15, "minecraft", "Acciones: " + this.numActions, 10);
-        this.actionsTxt.anchor.x = 0.5;
-        this.actionsTxt.smoothed = false;
-        this.actionsTxt.tint = 0xffffff;
-        this.actionsTxt.align = "center";
-        this.actionsTxt.z = 551;
-        
-        // create hover bitmapText
-        this.hoverTxt = this.add.bitmapText(this.world.centerX, this.world.centerY/2, "minecraft", "", 10);
-        this.hoverTxt.anchor.x = 0.5;
-        this.hoverTxt.smoothed = false;
-        this.hoverTxt.tint = 0xffffff;
-        this.hoverTxt.align = "center";
-        this.hoverTxt.z = 400;
+        this.createBitmapTxts();
         
         // add background
         this.add.image(0, 0, "fondo");
@@ -163,14 +153,20 @@ GWBW.Game.prototype = {
         
         // add sound effects
         this.stepsSnd = this.add.audio("stepsSnd", 0.1, true);
-        this.campfireSnd = this.add.audio("campfireSnd", 0.2, true);
+        this.campfireSnd = this.add.audio("campfireSnd", 0.4, true);
         this.laserSnd = this.add.audio("laserSnd", 0.4);
+        this.howlSnd = this.add.audio("howlSnd", 0.5);
+        this.roarSnd = this.add.audio("roarSnd", 0.5);
         
         // add entities
         this.addEntities();
         
         // create actions
         this.createActions();
+        
+        // predators
+        this.predatorDay1 = 9 + this.math.between(0, 3);  // a predator will attack between day#9 and day#12
+        this.predatorDay2 = 28 + this.math.between(0, 3); // a predator will attack between day#28 and day#31
         
         // launch fadeout animation
         this.add.tween(this.fadeAlpha).to({value: 0}, 2000, Phaser.Easing.Quadratic.InOut, true)
@@ -213,6 +209,7 @@ GWBW.Game.prototype = {
             }, this);
             timerTmp.start();
         }
+        
         // manage actions
         for (var prop in this.buttons) {
             var btn = this.buttons[prop];
@@ -227,8 +224,24 @@ GWBW.Game.prototype = {
             }
         }
         
+        // check if actions had been spent
+        if (this.numActions == 0 && this.dialogbox.y <= -this.dialogbox.height/2) {
+            this.numActions = -1;
+            this.add.tween(this.fadeAlpha).to({value: 1}, 2000, Phaser.Easing.Quadratic.InOut, true)
+                .onComplete.add(function() {
+                    this.onDayPasses();
+                }, this);
+        } 
+        
         // update actions text
-        this.actionsTxt.text = "Acciones: " + this.numActions;
+        if (this.numActions >= 0) {
+            this.actionsTxt.text = this.isOver ? "": "Acciones: " + this.numActions;
+        }
+        
+        // check click on gameOver
+        if (this.isOver && this.dialogbox.y <= -this.dialogbox.height/2 && this.input.mousePointer.isDown) {
+            this.state.start("GWBW.Boot", true, true);
+        }
         
         this.world.sort("z", Phaser.Group.SORT_ASCENDING);
     },
@@ -259,6 +272,189 @@ GWBW.Game.prototype = {
             if (this[e.name].custom_init) this[e.name].custom_init();
         }
     },
+    checkBodies: function() {
+        for (var q=0; q<this.CREW_ENTITIES; q++) {
+            var member = this[CREW_ENTITIES[q]];
+            if (member.currentAnim == member.anims.die) member.kill();
+        }
+    },
+    checkCampfire: function() {
+        this.fireAmount --;
+        if (this.fireAmount < 0) {
+            this.end = 0;
+            this.isOver = true;
+            this.dialogbox.text = "Has olvidado mantener la hoguera encendida. \n ";
+            this.dialogbox.text += "Os habéis congelado durante la noche.";
+            this.dialogbox.name = "Recuerda la lumbre.";
+            this.tweenDialog({ y: 0 }, 1);
+        }
+    },
+    checkGameOver: function(casualtiesText) {
+        if (this.isOver) {
+            this.endTitle = "GODS HAVE BEEN WATCHING";
+            this.summary = "Has sobrevivido " + this.day + " día(s) \n  \n ";
+            this.summary += this.endings[this.end];
+            this.summary += " \n  \n Te quedaban " + this.ammo + " balas, " + this.foodAmount + " raciones de comida \n y " + this.medicines + " medicinas.";
+            if (this.radioStatus >= this.radioMax) {
+                this.summary += " \n La radio funciona perfectamente";
+            } else {
+                this.summary += " \n Reparación de la radio al " + Math.floor(this.radioStatus/this.radioMax*100) + " %.";
+            }
+            this.summary += ' \n  \n Gracias por jugar.';
+            
+            this.endTitleTxt.text = this.endTitle;
+            this.summaryTxt.text = this.summary;
+        } else {
+            var cdTxt = "Quedan " + (40 - this.day) + " días.";
+            if (40 - this.day == 1) cdTxt = "Queda 1 día.";
+            this.countdown = cdTxt + casualtiesText;
+            this.countdownTxt.text = this.countdown;
+            
+            this.add.tween(this.fadeAlpha).to({value: 0}, 2000, Phaser.Easing.Quadratic.InOut, true, 2000)
+                .onComplete.add(function() {
+                    this.countdownTxt.text = "";
+                }, this);
+        }
+    },
+    checkMadmen: function() {
+        var madmen = [];
+        var madmenText = "";
+        for (var q=0; q<4; q++) {
+            if (this.sanity[q] < 0 && this.sanity[q] > -99) {
+                this.memberFlees(q);
+                if (q == this.SOLDIER_ID)   madmen.push("el soldado");
+                if (q == this.DOCTOR_ID)    madmen.push("el doctor");
+                if (q == this.SCIENTIST_ID) madmen.push("el ingeniero");
+                if (q == this.GIRL_ID)      madmen.push("la psiquiatra");
+            }
+        }
+        if (madmen.length) {
+            madmenText = "Ha desaparecido ";
+            if (madmen.length > 1) {
+                madmenText = "Han desaparecido ";
+                for (q=0; q<madmen.length-2; q++) {
+                    madmenText += madmen[q] + ", ";
+                }
+                madmenText += madmen[madmen.length-2] + " y ";
+            }
+            madmenText += madmen[madmen.length-1] + ". \n ";
+            if (madmen.length > 1) {
+                madmenText += "La locura ha hecho que huyan. No creo que regresen.";
+            } else {
+                madmenText += "La locura ha hecho que huya. No creo que vuelva.";
+            }
+            this.dialogbox.text = madmenText;
+            this.dialogbox.name = "Desesperación";
+            this.tweenDialog({y:0}, 1);
+        }
+    },
+    checkCrewSanity: function() {
+        for (var q=0; q < 4; q++) {
+            if (!this.spokenTo[q] && !this.infected[q]) this.sanity[q] -= 2;
+            if (this.foodAmount <= 0 && !this.infected[q]) this.sanity[q] -= 2;
+            if (this.sanity[q] > this.sanityMax[q])  this.sanity[q] = this.sanityMax[q];
+            this.spokenTo[q] = false;
+        }
+    },
+    checkInfections: function() {
+        if (Math.random() < .19) {
+            var virus = this.math.between(0, 3);
+            if (!this.infected[virus] && this.sanity[virus] > -99) {
+                this.infected[virus] = true;
+                this[this.CREW_ENTITIES[virus]+"Action"].infected = true;
+                this.numSurvivors --;
+                this.rationsNeeded --;
+            }
+        }
+
+        var casualties = [];
+        var casualtiesText = "";
+        for (var q=0; q<4; q++) {
+            if (this.infected[q]) {
+                this.infectionLevel[q]++;
+            } else {
+                this.infectionLevel[q] = 0;
+            }
+            if (this.infectionLevel[q] >= 4 && this.sanity[q] > -99) {
+                if (q == this.SOLDIER_ID)   casualties.push("el soldado");
+                if (q == this.DOCTOR_ID)    casualties.push("el doctor");
+                if (q == this.SCIENTIST_ID) casualties.push("el ingeniero");
+                if (q == this.GIRL_ID)      casualties.push("la psiquiatra");
+                this.numSurvivors++;
+                this.rationsNeeded++;
+                this.memberFlees(q);
+            }
+        }
+        if (casualties.length) {
+            casualtiesText = " \n El virus Medusea ha acabado con ";
+            if (casualties.length > 1) {
+                for (q=0; q<casualties.length-2; q++) {
+                    casualtiesText += casualties[q] + ", ";
+                }
+                casualtiesText += casualties[casualties.length-2] + " y ";
+            }
+            casualtiesText += casualties[casualties.length-1] + ". \n ";
+            if (casualties.length > 1) {
+                casualtiesText += "Los cadáveres tóxicos han sido incinerados.";
+            } else {
+                casualtiesText += "El cadáver tóxico ha sido incinerado.";
+            }
+        }
+
+        return casualtiesText;
+    },
+    checkPredators: function() {
+        if (this.day == this.predatorDay1 - 1 || this.day == this.predatorDay2 - 1) {
+            this.howlSnd.play();
+        }
+        if (this.day == this.predatorDay1 || this.day == this.predatorDay2) {
+            this.roarSnd.play();
+            var shooting = this.math.between(4, 7);
+            if (shooting <= this.ammo) {
+                var foodLost = this.math.between(3, 7);
+                this.dialogbox.text =   "Las has expulsado del campamento. Has necesitado " + shooting + " balas, pero \n ";
+                this.dialogbox.text +=  "te han robado " + foodLost + " raciones de comida. La moral del grupo ha bajado.";
+                this.dialogbox.name = "¡Bestias salvajes atacan durante la noche!";
+                this.ammo -= shooting;
+                this.reduceFood(foodLost);
+                this.reduceCrewSanity();
+                this.tweenDialog({ y: 0 }, 1);
+            } else { // we're defeated by predators
+                this.end = 1;
+                this.isOver = true;
+                this.dialogbox.text = "Necesitabas más balas de las que disponías. \n ";
+                this.dialogbox.text += "Has luchado con valentía, pero has sucumbido ante las bestias.";
+                this.dialogbox.name = "¡Depredadores salvajes atacan durante la noche!";
+                this.tweenDialog({ y: 0 }, 1);
+            }
+        }
+    },
+    checkSuicidalTendencies: function() {
+        var commitSuicide = true;
+        for (var q=0; q<this.sanity.length; q++) {
+            if (this.sanity[q] > -99) commitSuicide = false;
+        }
+        if (commitSuicide) {
+            this.isOver = true;
+            this.end = 4;
+        }
+    },
+    checkTimeLimit: function() {
+        if (this.day >= 40) {
+            if (this.radioStatus >= this.radioMax) {
+                this.dialogbox.text = "¡Lo logramos! ¡Por fin saldremos de este maldito planeta! \n ¡Mirad! ¡El convoy orbital!";
+                this.dialogbox.name = 'Sgt Burden';
+                this.tweenDialog({ y: 0 }, 1);
+                this.launchShip();
+            } else {
+                this.dialogbox.text = '¡Hemos sobrevivido! Pero la radio no funciona... \n Estamos atrapados aquí para siempre...';
+                this.dialogbox.name = 'Sgt Burden';
+                this.tweenDialog({ y: 0 }, 1);
+                this.isOver = true;
+                this.end = 2;
+            }
+        }
+    },
     createActions: function() {
         var actionData = this.cache.getJSON("actions");
         for (var q=0; q<actionData.length; q++) {
@@ -271,7 +467,7 @@ GWBW.Game.prototype = {
             for (var j=0; j<action.config.options.length; j++) {
                 this[action._name].options.push(action.config.options[j]);
             }
-            if (action.infections) {
+            if (action.config.infections) {
                 this[action._name].infections = [];
                 for (j=0; j<action.config.infections.length; j++) {
                     this[action._name].infections.push(action.config.infections[j]);
@@ -282,6 +478,71 @@ GWBW.Game.prototype = {
             
             this.buttons[action._name] = this[action._name];
         }
+    },
+    createBmpTxt: function(cfg) {
+        this[cfg.obj] = this.add.bitmapText(cfg.x, cfg.y, cfg.font, cfg.text, cfg.size);
+        this[cfg.obj].anchor.x = cfg.anchor || 0.5;
+        this[cfg.obj].smoothed = false;
+        this[cfg.obj].tint = cfg.tint || 0xffffff;
+        this[cfg.obj].align = cfg.align || "center";
+        if (cfg.z) this[cfg.obj].z = cfg.z;
+    },
+    createBitmapTxts: function() {
+        // create endTitle bitmapText
+        this.createBmpTxt({
+            obj:    "endTitleTxt",
+            x:      this.world.centerX,
+            y:      50,
+            font:   "fipps",
+            text:   "",
+            size:   9,
+            z:      510
+        });
+        
+        // create summary bitmapText
+        this.createBmpTxt({
+            obj:    "summaryTxt",
+            x:      this.world.centerX,
+            y:      70,
+            font:   "minecraft",
+            text:   "",
+            size:   8,
+            z:      511
+        });
+        
+        // create countdown bitmapText
+        this.createBmpTxt({
+            obj:    "countdownTxt",
+            x:      this.world.centerX,
+            y:      this.world.centerY/2,
+            font:   "minecraft",
+            text:   this.countdown,
+            size:   8,
+            z:      550
+        });
+        
+        
+        // create actions bitmapText
+        this.createBmpTxt({
+            obj:    "actionsTxt",
+            x:      this.world.width - 40,
+            y:      this.world.height - 15,
+            font:   "minecraft",
+            text:   "Acciones: " + this.numActions,
+            size:   8,
+            z:      551
+        });
+        
+        // create hover bitmapText
+        this.createBmpTxt({
+            obj:    "hoverTxt",
+            x:      this.world.centerX,
+            y:      this.world.centerY/2,
+            font:   "minecraft",
+            text:   "",
+            size:   8,
+            z:      400
+        });
     },
     formatActionObject: function(obj) {
         var options = obj.config.options;
@@ -295,6 +556,60 @@ GWBW.Game.prototype = {
             }
         }
         return obj;
+    },
+    launchShip: function() {
+        this.ship.y = 0;
+        this.add.tween(this.ship).to({y: 57}, 22000, Phaser.Easing.Quadratic.Out, true)
+            .onComplete.add(function() {
+                var title = this.add.image(this.world.centerX, this.world.centerY - 20, "titulo");
+                title.anchor.set(0.5);
+            }, this);
+    },
+    memberFlees: function(id) {
+        this[this.CREW_ENTITIES[id]].kill();
+        var name = this.CREW_ENTITIES[id] + "Action";
+        var action = this[name];
+        delete this.buttons[name];
+        action.destroy();
+
+        this.sufferMoralePunch(id);
+
+        this.rationsNeeded --;
+        this.numActions --;
+        this.numSurvivors --;
+    },
+    onDayPasses: function() {
+        console.log("a day has passed!");
+        
+        this.reduceFood(this.rationsNeeded);
+            
+        this.checkCampfire();
+        this.checkBodies();
+        this.checkCrewSanity();
+
+        this.day ++;
+        this.checkPredators();
+        this.checkMadmen();
+        var casualtiesText = this.checkInfections();
+        this.refreshActions();
+        this.checkSuicidalTendencies();
+        this.checkTimeLimit();
+        this.checkGameOver(casualtiesText);
+    },
+    reduceCrewSanity: function() {
+        for (var q=0; q<4; q++) {
+            if (!this.infected[q]) {
+                this.sanity[q] -= this.math.between(1, 3);
+            }
+        }
+    },
+    reduceFood: function(amount) {
+        this.foodAmount -= amount;
+        if (this.foodAmount < 0) this.foodAmount = 0;
+    },
+    refreshActions: function() {
+        this.numActions = this.numSurvivors;
+        if (this.numActions <= 0) this.numActions = 1;
     },
     shootCrew: function(id) {
         this.burden.play("shoot");

@@ -4,7 +4,7 @@ GWBW.Boot = function() {};
 GWBW.Boot.prototype = {
     init: function() {
         this.input.maxPointers = 1;
-        //this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
         
@@ -18,6 +18,7 @@ GWBW.Boot.prototype = {
         this.load.bitmapFont("minecraft");
     },
     create: function() {
+        this.game.context.scale(2, 2);
         this.state.start('GWBW.Preload');
     }
 };

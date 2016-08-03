@@ -70,7 +70,7 @@ GWBW.action_methods = {
     },
     campfireAction2: function() {
         if (this.fireAmount < 3) { 
-            this.dialogbox.text = '¡El Sargento Burden ha conseguido algo de madera para la hoguera!';
+            this.dialogbox.text = '¡El Sargento ha conseguido algo de madera para la hoguera!';
             this.dialogbox.name = '¡Fuego reavivado!';
             this.tweenDialog({ y: 0 }, 1, function() {
                 this.fireAmount = 3;
@@ -96,7 +96,7 @@ GWBW.action_methods = {
     },
     doctorAction2: function() {
         var vaccines = this.math.between(0, 2);
-        var txt = 'Conozco algunas hierbas de este planeta que podrán sernos útiles. \n ';
+        var txt = 'Algunas hierbas de este planeta podrían sernos útiles. \n ';
         if (vaccines) {
             txt += '[¡El Doctor ha preparado ' + vaccines + ' vacuna/s!]';
         } else {
@@ -342,7 +342,7 @@ GWBW.action_methods = {
     },
     girlAction2: function() {
         if (this.numActions >= this.numSurvivors) {
-            this.dialogbox.text = 'Este es el reto mas grande que un equipo de Eversdusk haya \n afrontado nunca. ¡Prevaleceremos y contaremos nuestra historia!';
+            this.dialogbox.text = 'Este es el reto mas grande que un equipo de Eversdusk haya \n afrontado nunca. ¡Prevaleceremos para contarlo!';
             this.dialogbox.name = 'Sgt Burden';
             this.tweenDialog({ y: 0 }, 1, function() {
                 for (var i = 0; i < this.sanity.length; i++) {

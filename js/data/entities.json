@@ -19,6 +19,21 @@
             "update":   "dialogbox_update"
         },
         {
+            "name":     "ship",
+            "x":        100,
+            "y":        -999, 
+            "z":        12,
+            "anims":    [
+                {
+                    "name":     "idle",
+                    "frames":   [0, 1, 2, 3, 4, 3, 2, 1],
+                    "rate":     6,
+                    "loop":     true
+                }
+            ],
+            "start":    "idle"
+        },
+        {
             "name":     "water",
             "x":        6,
             "y":        84,
