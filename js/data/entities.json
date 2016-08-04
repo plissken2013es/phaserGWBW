@@ -198,7 +198,8 @@
             ],
             "start":    "idle",
             "init":     "burden_init",
-            "update":   "burden_update"
+            "update":   "burden_update",
+            "onclick":  "burden_onclick"
         },
         {
             "name":     "doctor",
