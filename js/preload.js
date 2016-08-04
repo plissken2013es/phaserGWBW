@@ -2,6 +2,14 @@ GWBW.Preload = function() {
     this.preloadBar = null;
 };
 GWBW.Preload.prototype = {
+    init: function() {
+        this.input.maxPointers = 1;
+        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.scale.pageAlignHorizontally = true;
+        this.scale.pageAlignVertically = true;
+        
+        this.time.desiredFps = 60;
+    },
     preload: function() {
         this.preloadBar = this.add.sprite(0, 0, "splash");
         this.load.setPreloadSprite(this.preloadBar);

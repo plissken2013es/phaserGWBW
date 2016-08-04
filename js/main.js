@@ -1,4 +1,4 @@
-var game = new Phaser.Game(320, 215, Phaser.AUTO);
+var game = new Phaser.Game(320, 215, Phaser.CANVAS, "screen", GWBW.Preload, false, false);
 
 game.state.add("GWBW.Boot", GWBW.Boot);
 game.state.add("GWBW.Preload", GWBW.Preload);
