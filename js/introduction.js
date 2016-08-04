@@ -31,7 +31,7 @@ GWBW.Introduction.prototype = {
             txt += GWBW.Introduction.txtArray[q];
         }
         
-        this.introTxt = this.add.bitmapText(this.world.centerX, 4, "minecraft", txt, 6);
+        this.introTxt = this.add.bitmapText(this.world.centerX, 4, "minecraft", txt, 7.5);
         this.introTxt.anchor.x = 0.5;
         this.introTxt.smoothed = false;
         this.introTxt.tint = 0xffffff;
