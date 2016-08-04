@@ -40,7 +40,7 @@ GWBW.Game.prototype = {
             [
                 'No subestimes el hambre, cuida las provisiones de comida \n y seremos capaces de afrontar cualquier amenaza.', 
                 'Marvin es un cazador excelente, pero donde se ponga un rifle... \n En cualquier caso: adoro a este perro.', 
-                'Somos demasiadas bocas. Nuestras provisiones no durarán mucho.', 
+                'Somos demasiadas bocas. Nuestras provisiones no durarán \n mucho.', 
                 'No pierdas de vista la munición: no sólo sirve para cazar, \n también para defendernos de las amenazas.', 
                 'El perro se llama Marvin por un camarada que perdí \n en los campos de hidrofósforo, fue una batalla brutal...',
                 'Sé que hay alimañas al acecho, \n somos un plato demasiado apetitoso para ellas...',
@@ -127,6 +127,8 @@ GWBW.Game.prototype = {
         
         this.game.canvas.style.cursor = "none";
         this.game.canvas.antialias = false;
+        
+        this.debugMode = false;
     },
     create: function() {
         // shuffle dialogues
@@ -167,6 +169,8 @@ GWBW.Game.prototype = {
         // predators
         this.predatorDay1 = 9 + this.math.between(0, 3);  // a predator will attack between day#9 and day#12
         this.predatorDay2 = 28 + this.math.between(0, 3); // a predator will attack between day#28 and day#31
+        
+        this.input.keyboard.addKey(Phaser.Keyboard.D).onDown.add(this.toggleDebug, this);
         
         // launch fadeout animation
         this.add.tween(this.fadeAlpha).to({value: 0}, 2000, Phaser.Easing.Quadratic.InOut, true)
@@ -246,6 +250,21 @@ GWBW.Game.prototype = {
         this.world.sort("z", Phaser.Group.SORT_ASCENDING);
     },
     render: function() {
+        if (this.debugMode) {
+            this.game.debug.text("Día " + this.day + ", fiera1 día" + this.predatorDay1 +  ", fiera2 día" + this.predatorDay2, 6, 20, null, "minecraft");
+            this.game.debug.text("Cordura soldado " + this.sanity[this.SOLDIER_ID] +  ", doctor " + this.sanity[this.DOCTOR_ID], 6, 40, null, "minecraft");
+            this.game.debug.text("Científico " + this.sanity[this.SCIENTIST_ID] +  ", psicóloga " + this.sanity[this.GIRL_ID], 6, 60, null, "minecraft");
+            this.game.debug.text("Infectados soldado " + this.infected[this.SOLDIER_ID] +  ", doctor " + this.infected[this.DOCTOR_ID], 6, 80, null, "minecraft");
+            this.game.debug.text("Científico " + this.infected[this.SCIENTIST_ID] + ", psicóloga " + this.infected[this.GIRL_ID], 6, 100, null, "minecraft");
+            this.game.debug.text("Nivel infección soldado " + this.infectionLevel[this.SOLDIER_ID] + ", doctor " + this.infectionLevel[this.DOCTOR_ID], 6, 120, null, "minecraft");
+            this.game.debug.text("Científico " + this.infectionLevel[this.SCIENTIST_ID] + ", psicóloga " + this.infectionLevel[this.GIRL_ID], 6, 140, null, "minecraft");
+            this.game.debug.text("Raciones necesarias " + this.rationsNeeded + ", supervivientes " + this.numSurvivors, 6, 160, null, "minecraft");
+            this.game.debug.text("Medicinas " + this.medicines + ", balas " + this.ammo + ", comida " + this.foodAmount, 6, 180, null, "minecraft");
+            this.game.debug.text("Reparación radio " + this.radioStatus + " / " + this.radioMax, 6, 200, null, "minecraft");
+            
+            this.game.debug.text("("+(this.crosshair.x+8)+","+(this.crosshair.y+8)+")", this.crosshair.x, this.crosshair.y, "#00ff00", "minecraft");
+        }
+        
         if (this.fadeAlpha.value) {
             this.fade.clear();
             this.fade.beginFill(0x000000, this.fadeAlpha.value);
@@ -650,12 +669,32 @@ GWBW.Game.prototype = {
         this.music.play();
         this.music.fadeTo(6000, 0.25);
     },
+    startTalking: function(spr, tween, member, duration) {
+        member.isTalking = true;
+        
+        var timerTmp = this.time.create();
+        timerTmp.add(duration, function() {
+            member.isTalking = false;
+        }, this);
+        timerTmp.start();
+    },
+    toggleDebug: function() {
+        this.debugMode = this.debugMode ? false : true;
+        this.fadeAlpha.value = this.debugMode ? 0.5 : 0;
+        if (!this.fadeAlpha.value) this.fade.clear();
+    },
     tweenDialog: function(pos, time, callback) {
         time = time * 1000;
         var anim = this.add.tween(this.dialogbox);
         anim.to({y: pos.y}, time, Phaser.Easing.Quadratic.Out);
+        
+        var member = null, duration = null;
+        if (arguments.length > 3) {
+            member = arguments[3];
+            duration = arguments[4];
+        }
         if (callback) {
-            anim.onComplete.add(callback, this);
+            anim.onComplete.add(callback, this, 0, member, duration);
         }
         this.dialogbox.isAnimated = true;
         anim.start();

@@ -37,14 +37,12 @@ GWBW.entities_methods = {
             this.nameTxt.text = this.name;
             this.mainTxt.text = this.text;
         }
-        if (this.y >= 0) {
-            if (this.gameLink.input.mousePointer.justPressed()) {
-                this.isAnimated = true;
-                this.gameLink.add.tween(this).to({ y: -this.height }, 800, Phaser.Easing.Quadratic.Out, true)
-                    .onComplete.add(function() {
-                        this.isAnimated = false;
-                    }, this);
-            }
+        if (this.y >= 0 && this.gameLink.input.mousePointer.isDown) {
+            this.isAnimated = true;
+            this.gameLink.add.tween(this).to({ y: -this.height }, 800, Phaser.Easing.Quadratic.Out, true)
+                .onComplete.add(function() {
+                    this.isAnimated = false;
+                }, this);
         }
     },
     planet1_update: function() {
@@ -75,6 +73,7 @@ GWBW.entities_methods = {
         this.speed = 45;
         this.target = 0;
         this.isWalking = false;
+        this.isTalking = false;
         this.flip = false;
         
         this.anchor.x = 0.5;
@@ -84,34 +83,39 @@ GWBW.entities_methods = {
     burden_update: function() {
         if (this.gameLink.isOver) return;
         
-        if (this.animations.currentAnim != this.animations._anims.shoot) {
-            if (this.gameLink.input.mousePointer.isDown && !this.gameLink.options.length && this.gameLink.dialogbox.y < -this.gameLink.dialogbox.height/2) {
-                this.target = this.gameLink.input.mousePointer.x;
-                if (this.x > this.target) {
-                    this.body.velocity.x = -this.speed;
-                    this.flip = false;
-                } else {
-                    this.body.velocity.x = this.speed;
-                    this.flip = true;
+        if (!this.isTalking) {
+            if (this.animations.currentAnim != this.animations._anims.shoot) {
+                if (this.gameLink.input.mousePointer.isDown && !this.gameLink.options.length && this.gameLink.dialogbox.y < -this.gameLink.dialogbox.height/2) {
+                    this.target = this.gameLink.input.mousePointer.x;
+                    if (this.x > this.target) {
+                        this.body.velocity.x = -this.speed;
+                        this.flip = false;
+                    } else {
+                        this.body.velocity.x = this.speed;
+                        this.flip = true;
+                    }
+                    this.play("walk");
                 }
-                this.play("walk");
-            }
-            if (this.body.velocity.x > 0 && this.x > this.target - 20) {
+                if (this.body.velocity.x > 0 && this.x > this.target - 20) {
+                    this.body.velocity.x = 0;
+                }
+                if (this.body.velocity.x < 0 && this.x < this.target + 20) {
+                    this.body.velocity.x = 0;
+                }
+                if (this.x < 39) {
+                    this.body.velocity.x = 0;
+                    this.x = 39;
+                }
+                if (!this.body.velocity.x) {
+                    this.play("idle");
+                }
+            } else {
                 this.body.velocity.x = 0;
-            }
-            if (this.body.velocity.x < 0 && this.x < this.target + 20) {
-                this.body.velocity.x = 0;
-            }
-            if (this.x < 39) {
-                this.body.velocity.x = 0;
-                this.x = 39;
-            }
-            if (!this.body.velocity.x) {
-                this.play("idle");
+                if (this.animations.currentAnim.isFinished) this.play("idle");
             }
         } else {
             this.body.velocity.x = 0;
-            if (this.animations.currentAnim.isFinished) this.play("idle");
+            this.play("talk");
         }
         
         var flipX = this.flip ? -1 : 1;
@@ -133,7 +137,11 @@ GWBW.entities_methods = {
                 if (this.gameLink.sanity[this.gameLink.DOCTOR_ID] > 7)  this.state = this.gameLink.STATE_CALM;
                 if (this.gameLink.sanity[this.gameLink.DOCTOR_ID] <= 7) this.state = this.gameLink.STATE_NERVOUS;
                 if (this.gameLink.sanity[this.gameLink.DOCTOR_ID] <= 4) this.state = this.gameLink.STATE_STRESSED;
-                this.play('idle' + this.state);
+                if (this.isTalking) {
+                    this.play("talk" + this.state);
+                } else {
+                    this.play('idle' + this.state);
+                }
             }
         }
     },

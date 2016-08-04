@@ -15,7 +15,7 @@ GWBW.action_methods = {
         }
         this.dialogbox.text = resultText;
         this.dialogbox.name = 'Sgt Burden';
-        this.tweenDialog({ y: 0 }, 1, this.memberTalks);
+        this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
     },
     medicineAction: function() {
         var resultTxt = "No quedan medicinas.";
@@ -26,18 +26,18 @@ GWBW.action_methods = {
         }
         this.dialogbox.text = resultTxt;
         this.dialogbox.name = 'Sgt Burden';
-        this.tweenDialog({ y: 0 }, 1);
+        this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
     },
     foodAction: function() {
         var resultTxt = "No quedan alimentos.";
         if (this.foodAmount > 1) {
              resultTxt = 'Tenemos ' + this.foodAmount + ' raciones de alimentos.';
         } else if (this.foodAmount == 1) {
-            resultTxt = 'Queda una sola ración de food.';
+            resultTxt = 'Queda una sola ración de comida.';
         }
         this.dialogbox.text = resultTxt;
         this.dialogbox.name = 'Sgt Burden';
-        this.tweenDialog({ y: 0 }, 1);
+        this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
     },
     ammoAction: function() {
         var resultTxt = "No queda munición.";
@@ -48,7 +48,7 @@ GWBW.action_methods = {
         }
         this.dialogbox.text = resultTxt;
         this.dialogbox.name = 'Sgt Burden';
-        this.tweenDialog({ y: 0 }, 1);
+        this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
     },
     radioAction: function() {
         if (this.radioStatus >= this.radioMax) {
@@ -58,7 +58,7 @@ GWBW.action_methods = {
         } else {
             this.dialogbox.text = 'Es nuestra única salida, deberíamos arreglarla \n antes del día 40.';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     campfireAction1: function() {
@@ -66,7 +66,7 @@ GWBW.action_methods = {
         this.dialoguesIndex[this.BURDEN_ID]++;
         if (this.dialoguesIndex[this.BURDEN_ID] == this.dialogues[this.BURDEN_ID].length) this.dialoguesIndex[this.BURDEN_ID] = 0;
         this.dialogbox.name = 'Sgt Burden';
-        this.tweenDialog({ y: 0 }, 1);
+        this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
     },
     campfireAction2: function() {
         if (this.fireAmount < 3) { 
@@ -80,7 +80,7 @@ GWBW.action_methods = {
         } else {
             this.dialogbox.text = 'La hoguera ya está en su máximo esplendor. No hace falta más madera.';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     doctorAction1: function() {
@@ -93,6 +93,7 @@ GWBW.action_methods = {
             this.spokenTo[this.DOCTOR_ID] = true;
             this.numActions--;
         });
+        this.startTalking(null, null, this.doctor, 1500);
     },
     doctorAction2: function() {
         var vaccines = this.math.between(0, 2);
@@ -108,6 +109,7 @@ GWBW.action_methods = {
             this.medicines += vaccines;
             this.numActions --;
         });
+        this.startTalking(null, null, this.doctor, 1500);
     },
     doctorAction3: function() {
         if (this.radioStatus >= this.radioMax) {
@@ -122,6 +124,7 @@ GWBW.action_methods = {
                 this.numActions --;
             });
         }
+        this.startTalking(null, null, this.doctor, 1500);
     },
     doctorAction4: function() {
         if (this.ammo > 0) {
@@ -130,13 +133,13 @@ GWBW.action_methods = {
         } else {
             this.dialogbox.text = 'No nos queda munición. Y no me veo capaz de  \n matarlo con una roca o algo así...';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     doctorAction5: function() {
         this.dialogbox.text = "¿Doctor? ¿Está usted bien? ... \n Creo que puede estar infectado por el virus Medusea.";
         this.dialogbox.name = "Sgt Burden";
-        this.tweenDialog({ y: 0 }, 1);
+        this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
     },
     doctorAction6: function() {
         if (this.medicines > 0) {
@@ -150,10 +153,11 @@ GWBW.action_methods = {
                 this.infected[this.DOCTOR_ID] = false;
                 this.doctorAction.infected = false;
             });
+            this.startTalking(null, null, this.doctor, 1500);
         } else {
             this.dialogbox.text = 'Mierda... no nos quedan medicinas. Lo siento, Doctor.';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     doctorAction7: function() {
@@ -162,11 +166,10 @@ GWBW.action_methods = {
             this.ammo--;
             this.numSurvivors++;
             this.rationsNeeded++;
-
         } else {
             this.dialogbox.text = 'No nos queda munición. Y no me veo capaz de  \n matarlo con una roca o algo así...';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     scientistAction1: function() {
@@ -179,18 +182,13 @@ GWBW.action_methods = {
             this.spokenTo[this.SCIENTIST_ID] = true;
             this.numActions --;
         });
+        this.startTalking(null, null, this.scientist, 1500);
     },
     scientistAction2: function() {
         if (this.radioStatus >= this.radioMax) {
             this.dialogbox.text = 'El trabajo está hecho, jefe. Sólo mantengámonos con vida \n hasta que llegue el Convoy Orbital.';
             this.dialogbox.name = 'Ingeniero';
-            this.dialogbox.tween({
-                pos: {
-                    y: 0
-                }
-            }, 1, {
-                easing: ig.Tween.Easing.Quadratic.EaseOut
-            }).start();
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.scientist, 1500);
         } else {
             this.dialogbox.text = 'Vamos a reparar esta chatarra. \n [El ingeniero ha reparado un 6% de la radio.]';
             this.dialogbox.name = 'Ingeniero';
@@ -198,6 +196,7 @@ GWBW.action_methods = {
                 this.radioStatus += 3;
                 this.numActions --;
             });
+            this.startTalking(null, null, this.scientist, 1500);
         }
     },
     scientistAction3: function() {
@@ -207,13 +206,13 @@ GWBW.action_methods = {
         } else {
             this.dialogbox.text = 'No me cae bien, pero matarlo sin armas seria demasiado sadismo.';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     scientistAction4: function() {
         this.dialogbox.text = 'Ey, colega, ¿estás meditando o ...? \n ¡Oh, mierda...! Se ha infectado.';
         this.dialogbox.name = 'Sgt Burden';
-        this.tweenDialog({ y: 0 }, 1);
+        this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
     },
     scientistAction5: function() {
         if (this.medicines > 0) {
@@ -227,10 +226,11 @@ GWBW.action_methods = {
                 this.infected[this.SCIENTIST_ID] = false;
                 this.scientistAction.infected = false;
             });
+            this.startTalking(null, null, this.scientist, 1500);
         } else {
             this.dialogbox.text = 'Necesitaremos algunas medicinas para despertarlo.';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     scientistAction6: function() {
@@ -242,7 +242,7 @@ GWBW.action_methods = {
         } else {
             this.dialogbox.text = 'No me cae bien, pero matarlo sin armas seria demasiado sadismo.';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     soldierAction1: function() {
@@ -255,6 +255,7 @@ GWBW.action_methods = {
             this.spokenTo[this.SOLDIER_ID] = true;
             this.numActions --;
         });
+        this.startTalking(null, null, this.soldier, 1500);
     },
     soldierAction2: function() {
         if (this.ammo > 2) {
@@ -281,7 +282,7 @@ GWBW.action_methods = {
         } else {
             this.dialogbox.text = 'Nos hemos quedado sin munición, lo siento. Si queda alguna bala, \n utilícela para destruir al robot. Podríamos usar sus baterías.';
             this.dialogbox.name = 'Soldado';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.soldier, 1500);
         }
     },
     soldierAction3: function() {
@@ -291,13 +292,13 @@ GWBW.action_methods = {
         } else {
             this.dialogbox.text = 'Me he quedado sin balas... y no voy a poder matarlo \n con las manos desnudas.';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     soldierAction4: function() {
         this.dialogbox.text = '¿Has visto algo? Mantene alerta. \n ¿Hola? ¿Estás ahí? Oh... el virus Medusea...';
         this.dialogbox.name = 'Sgt Burden';
-        this.tweenDialog({ y: 0 }, 1);
+        this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
     },
     soldierAction5: function() {
         if (this.medicines > 0) {
@@ -311,10 +312,11 @@ GWBW.action_methods = {
                 this.infected[this.SOLDIER_ID] = false;
                 this.soldierAction.infected = false;
             });
+            this.startTalking(null, null, this.soldier, 1500);
         } else {
             this.dialogbox.text = 'Era un gran camarada. Me gustaria salvarle. \n Necesitamos medicinas.';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     soldierAction6: function() {
@@ -324,9 +326,9 @@ GWBW.action_methods = {
             this.shootCrew(this.SOLDIER_ID);
             this.ammo--;
         } else {
-            this.dialogbox.text = 'No me queda munición... y no sería... \n honorable matar a palos a un soldado congelado.';
+            this.dialogbox.text = 'No me queda munición... y no sería... \n honorable matar a palos a un soldado.';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     girlAction1: function() {
@@ -366,13 +368,13 @@ GWBW.action_methods = {
         } else {
             this.dialogbox.text = 'No me queda munición \n y no me veo matando a una chica a golpes.';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     girlAction4: function() {
         this.dialogbox.text = 'Escucha... a veces tengo fantasías con mi nave y... \n ¡Eh! ¿Me estás escuchando? Mierda, el virus Medusea.';
         this.dialogbox.name = 'Sgt Burden';
-        this.tweenDialog({ y: 0 }, 1);
+        this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
     },
     girlAction5: function() {
         if (this.medicines > 0) {
@@ -389,7 +391,7 @@ GWBW.action_methods = {
         } else {
             this.dialogbox.text = 'Pobre chica... No nos quedan medicinas...';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     girlAction6: function() {
@@ -401,7 +403,7 @@ GWBW.action_methods = {
         } else {
             this.dialogbox.text = 'No me queda munición \n y no me veo matando a una chica a golpes.';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     dogAction1: function() {
@@ -435,7 +437,7 @@ GWBW.action_methods = {
         } else {
             this.dialogbox.text = 'No me queda munición... Y Marvin es tan mono...';
             this.dialogbox.name = 'Sgt Burden';
-            this.tweenDialog({ y: 0 }, 1);
+            this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
         }
     },
     robotAction1: function() {
