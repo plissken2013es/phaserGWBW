@@ -82,18 +82,7 @@ GWBW.entities_methods = {
         this.gameLink.physics.arcade.enable(this);
     },
     burden_update: function() {
-        if (this.animations.currentAnim != this.animations._anims.shoot) {
-            if (this.gameLink.input.mousePointer.isDown && !this.gameLink.options.length && this.gameLink.dialogbox.y < -this.gameLink.dialogbox.height/2) {
-                this.target = this.gameLink.input.mousePointer.x;
-                if (this.x > this.target) {
-                    this.body.velocity.x = -this.speed;
-                    this.flip = false;
-                } else {
-                    this.body.velocity.x = this.speed;
-                    this.flip = true;
-                }
-                this.play("walk");
-            }
+        if (this.animations.currentAnim != this.animations.shoot) {
             if (this.body.velocity.x > 0 && this.x > this.target) {
                 this.body.velocity.x = 0;
             }
@@ -122,6 +111,17 @@ GWBW.entities_methods = {
             this.gameLink.stepsSnd.stop();
             this.isWalking = false;
         }
+    },
+    burden_onclick: function() {
+        this.target = this.gameLink.input.x;
+        if (this.x > this.target) {
+            this.body.velocity.x = -this.speed;
+            this.flip = false;
+        } else {
+            this.body.velocity.x = this.speed;
+            this.flip = true;
+        }
+        this.play("walk");
     },
     doctor_update: function() {
         if (this.animations.currentAnim != this.animations._anims.die) {

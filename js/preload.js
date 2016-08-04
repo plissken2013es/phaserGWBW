@@ -4,7 +4,6 @@ GWBW.Preload = function() {
 GWBW.Preload.prototype = {
     init: function() {
         this.input.maxPointers = 1;
-        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
         
