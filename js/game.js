@@ -262,6 +262,12 @@ GWBW.Game.prototype = {
             this.entities.push(this[e.name]);
             if (this[e.name].custom_init) this[e.name].custom_init();
         }
+
+        // launch fadeout animation
+        this.add.tween(this.fadeAlpha).to({value: 0}, 2000, Phaser.Easing.Quadratic.InOut, true)
+            .onComplete.add(function() {
+                this.countdownTxt.text = "";
+            }, this);
     },
     createActions: function() {
         var actionData = this.cache.getJSON("actions");
