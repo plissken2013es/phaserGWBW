@@ -86,7 +86,7 @@ GWBW.Game.prototype = {
         this.add.tween(this.fadeAlpha).to({value: 0}, 2000, Phaser.Easing.Quadratic.InOut, true)
             .onComplete.add(function() {
                 this.countdownTxt.text = "";
-            }.bind(this));;
+            }, this);
     },
     update: function() {
         this.crosshair.x = Math.floor(this.input.mousePointer.x - 8);
