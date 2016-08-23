@@ -26,7 +26,7 @@ GWBW.Option.prototype = {
         var x = Math.floor(this.gameLink.input.mousePointer.x);
         var y = Math.floor(this.gameLink.input.mousePointer.y);
         
-        if (btn.infected) {
+        if (opt.infected) {
             for (var i=0; i < opt.infections.length; i++) {
                 var txt = this.gameLink.add.bitmapText(x - 20, y - 20 + i * 18, "minecraft", opt.infections[i].text, 10);
                 if (txt.x + txt.textWidth > this.gameLink.world.width) txt.x -= Math.floor(txt.textWidth/2);
