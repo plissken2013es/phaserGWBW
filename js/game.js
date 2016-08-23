@@ -93,15 +93,15 @@ GWBW.Game.prototype = {
         this.infected = [false, false, false, false, false]; // soldier - doctor - scientist - girl
         this.infectionLevel = [0, 0, 0, 0, 0];
         
-        this.MEMBER_WEIGHT = [17, 15, 21, 12, 0, 30, 10];
+        this.MEMBER_WEIGHT = [17, 15, 21, 12, 0, 10, 30];
         this.MORALE_PUNCH = [
               [-100,    -1,     0,      -2],
               [-3,      -100,   -1,     -1],
               [1,       -1,     -100,   -3],
               [-2,      -1,     -3,      -100],
               [0,      0,     0,      0],       // burden
-              [0,       -3,     -2,      0],
-              [-3,      -2,     -1,      -1]
+              [-3,      -2,     -1,      -1],
+              [0,       -3,     -2,      0]
         ];
         this.CREW_ENTITIES = [
             "soldier",
@@ -135,8 +135,8 @@ GWBW.Game.prototype = {
         this.countdownTxt.smoothed = false;
         this.countdownTxt.tint = 0xffffff;
         this.countdownTxt.align = "center";
-        this.countdownTxt.z = 550;
-        
+        this.countdownTxt.z = 501;
+
         // create actions bitmapText
         this.actionsTxt = this.add.bitmapText(this.world.width - 40, this.world.height - 15, "minecraft", "Acciones: " + this.numActions, 10);
         this.actionsTxt.anchor.x = 0.5;
@@ -151,7 +151,7 @@ GWBW.Game.prototype = {
         this.hoverTxt.smoothed = false;
         this.hoverTxt.tint = 0xffffff;
         this.hoverTxt.align = "center";
-        this.hoverTxt.z = 400;
+        this.hoverTxt.z = 400;        
         
         // add background
         this.add.image(0, 0, "fondo");
@@ -261,14 +261,8 @@ GWBW.Game.prototype = {
             
             this.entities.push(this[e.name]);
             if (this[e.name].custom_init) this[e.name].custom_init();
-        }
-
-        // launch fadeout animation
-        this.add.tween(this.fadeAlpha).to({value: 0}, 2000, Phaser.Easing.Quadratic.InOut, true)
-            .onComplete.add(function() {
-                this.countdownTxt.text = "";
-            }, this);
-    },
+        }        
+    },   
     createActions: function() {
         var actionData = this.cache.getJSON("actions");
         for (var q=0; q<actionData.length; q++) {
@@ -292,7 +286,7 @@ GWBW.Game.prototype = {
             
             this.buttons[action._name] = this[action._name];
         }
-    },
+    },  
     formatActionObject: function(obj) {
         var options = obj.config.options;
         for (var q=0; q<options.length; q++) {
@@ -305,7 +299,7 @@ GWBW.Game.prototype = {
             }
         }
         return obj;
-    },
+    },    
     shootCrew: function(id) {
         this.burden.play("shoot");
         this.laserSnd.play();
@@ -330,7 +324,7 @@ GWBW.Game.prototype = {
         this.rationsNeeded --;
         this.numActions --;
         this.numSurvivors --;
-    },
+    }, 
     sufferMoralePunch: function(id) {
         var moralePunch = this.MORALE_PUNCH[id];
         for (var q=0; q<4; q++) {
@@ -340,7 +334,7 @@ GWBW.Game.prototype = {
                 this.sanity[q] += moralePunch[q];
             }
         }
-    },
+    },    
     startMusic: function() {
         this.music.play();
         this.music.fadeTo(6000, 0.25);
@@ -354,5 +348,5 @@ GWBW.Game.prototype = {
         }
         this.dialogbox.isAnimated = true;
         anim.start();
-    }
+    }    
 };

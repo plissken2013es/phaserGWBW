@@ -17,7 +17,7 @@
             "start":    "idle",
             "init":     "dialogbox_init",
             "update":   "dialogbox_update"
-        },
+        },        
         {
             "name":     "water",
             "x":        6,

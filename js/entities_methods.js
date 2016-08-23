@@ -11,13 +11,13 @@ GWBW.entities_methods = {
         this.nameTxt.align = "left";
         this.nameTxt.z = 663;
 
-        this.blinkTxt = this.gameLink.add.bitmapText(this.gameLink.world.width - 7, this.y + this.height - 2, "minecraft", "...", 8);
+        this.blinkTxt = this.gameLink.add.bitmapText(this.gameLink.world.width - 16, this.y + this.height - 14, "minecraft", ">>>", 8);
         this.blinkTxt.smoothed = false;
         this.blinkTxt.tint = 0xffffff;
         this.blinkTxt.align = "right";
         this.blinkTxt.z = 664;
         
-        this.mainTxt = this.gameLink.add.bitmapText(this.x + 4, this.y + 12, "minecraft", this.text, 7);
+        this.mainTxt = this.gameLink.add.bitmapText(this.x + 4, this.y + 12, "minecraft", this.text, 8);
         this.mainTxt.smoothed = false;
         this.mainTxt.tint = 0xffffff;
         this.mainTxt.align = "left";
@@ -38,7 +38,7 @@ GWBW.entities_methods = {
             this.mainTxt.text = this.text;
         }
         if (this.y >= 0) {
-            if (this.gameLink.input.mousePointer.justPressed()) {
+            if (this.gameLink.input.mousePointer.isDown) {
                 this.isAnimated = true;
                 this.gameLink.add.tween(this).to({ y: -this.height }, 800, Phaser.Easing.Quadratic.Out, true)
                     .onComplete.add(function() {
@@ -46,7 +46,7 @@ GWBW.entities_methods = {
                     }, this);
             }
         }
-    },
+    },    
     planet1_update: function() {
         this.x = 170 + this.game.state.getCurrentState().day;
     },
@@ -82,7 +82,7 @@ GWBW.entities_methods = {
         this.gameLink.physics.arcade.enable(this);
     },
     burden_update: function() {
-        if (this.animations.currentAnim != this.animations.shoot) {
+        if (this.animations.currentAnim != this.animations._anims.shoot) {
             if (this.body.velocity.x > 0 && this.x > this.target) {
                 this.body.velocity.x = 0;
             }
@@ -100,10 +100,9 @@ GWBW.entities_methods = {
             this.body.velocity.x = 0;
             if (this.animations.currentAnim.isFinished) this.play("idle");
         }
-        
         var flipX = this.flip ? -1 : 1;
         this.scale.set(flipX, 1);
-        
+
         if (this.body.velocity.x && !this.isWalking) {
             this.gameLink.stepsSnd.play();
             this.isWalking = true;
@@ -113,6 +112,7 @@ GWBW.entities_methods = {
         }
     },
     burden_onclick: function() {
+        if (this.gameLink.dialogbox.position.y > -45) return;
         this.target = this.gameLink.input.x;
         if (this.x > this.target) {
             this.body.velocity.x = -this.speed;

@@ -53,7 +53,7 @@ GWBW.Preload.prototype = {
         
         this.load.path = "js/data/";
         this.load.json("entities");
-        this.load.json("actions");
+        this.load.json("actions");        
     },
     create: function() {
         this.preloadBar.cropEnabled = false;
