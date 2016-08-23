@@ -17,7 +17,7 @@
             "start":    "idle",
             "init":     "dialogbox_init",
             "update":   "dialogbox_update"
-        },
+        },        
         {
             "name":     "ship",
             "x":        100,
@@ -230,7 +230,8 @@
             ],
             "start":    "idle",
             "init":     "burden_init",
-            "update":   "burden_update"
+            "update":   "burden_update",
+            "onclick":  "burden_onclick"
         },
         {
             "name":     "doctor",

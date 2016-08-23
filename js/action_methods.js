@@ -13,7 +13,7 @@ GWBW.action_methods = {
         } else {
             resultText += "casi puedo \n tocarlo con los dedos...";
         }
-        this.dialogbox.text = resultText;
+        this.dialogbox.text = resultText; 
         this.dialogbox.name = 'Sgt Burden';
         this.tweenDialog({ y: 0 }, 1, this.startTalking, this.burden, 1500);
     },
@@ -448,17 +448,17 @@ GWBW.action_methods = {
 
         this.dialogbox.text = 'Psicoanálisis: ' + soldier + ', ' + doctor + ', ' + scientist + ', ' + girl;
         this.dialogbox.text += ' \n Reparación de la Radio: ' + parseInt(this.radioStatus) + ' / ' + this.radioMax;
-        this.dialogbox.name = 'BR4ND-0N';
+        this.dialogbox.name = 'BR4ND-0n';
         this.tweenDialog({ y: 0 }, 1);
     },
     robotAction2: function() {
         if (this.radioStatus >= this.radioMax) {
             this.dialogbox.text = 'La radio ya está operacional, Sargento.';
-            this.dialogbox.name = 'BR4ND-0N';
+            this.dialogbox.name = 'BR4ND-0n';
             this.tweenDialog({ y: 0 }, 1);
         } else {
             this.dialogbox.text = 'El ingeniero debería ser más eficaz, pero haré lo que pueda. \n [BR4ND-0N ha reparado un 4% de la radio.]';
-            this.dialogbox.name = 'BR4ND-0N';
+            this.dialogbox.name = 'BR4ND-0n';
             this.tweenDialog({ y: 0 }, 1, function() {
                 this.radioStatus += 2;
                 this.numActions --;

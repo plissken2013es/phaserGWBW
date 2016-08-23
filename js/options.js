@@ -20,35 +20,35 @@ GWBW.Option.prototype = {
         this.graphics.drawRect(params.x - 2, params.y - 2, params.w + 2, params.h + 2);
         this.graphics.endFill();
     },
-    createOptionsFor: function(btn) {
+    createOptionsFor: function(opt) {
         this.container = this.gameLink.add.group();
         
         var x = Math.floor(this.gameLink.input.mousePointer.x);
         var y = Math.floor(this.gameLink.input.mousePointer.y);
         
-        if (btn.infected) {
-            for (var i=0; i < btn.infections.length; i++) {
-                var txt = this.gameLink.add.bitmapText(x - 20, y - 20 + i * 18, "minecraft", btn.infections[i].text, 8);
+        if (opt.infected) {
+            for (var i=0; i < opt.infections.length; i++) {
+                var txt = this.gameLink.add.bitmapText(x - 20, y - 20 + i * 18, "minecraft", opt.infections[i].text, 10);
                 if (txt.x + txt.textWidth > this.gameLink.world.width) txt.x -= Math.floor(txt.textWidth/2);
                 
                 txt.smoothed = false;
                 txt.tint = 0x00ff00;
                 txt.z = 200 + i;
-                txt.action = btn.infections[i].action;
+                txt.action = opt.infections[i].action;
                 
                 this.addTxtBackground(this.container, {x: txt.x, y: txt.y, w: txt.textWidth, h: txt.textHeight});
                 this.container.add(txt);
                 this.addButtonImage(this.container, {x: txt.x, y: txt.y, w: txt.textWidth, h: txt.textHeight}, txt);
             }
         } else {
-            for (var i=0; i < btn.options.length; i++) {
-                var txt = this.gameLink.add.bitmapText(x - 20, y - 20 + i * 18, "minecraft", btn.options[i].text, 8);
+            for (var i=0; i < opt.options.length; i++) {
+                var txt = this.gameLink.add.bitmapText(x - 20, y - 20 + i * 18, "minecraft", opt.options[i].text, 10);
                 txt.smoothed = false;
                 if (txt.x + txt.textWidth > this.gameLink.world.width) txt.x -= Math.floor(txt.textWidth/2);
                 
                 txt.tint = 0x00ff00;
                 txt.z = 200 + i;
-                txt.action = btn.options[i].action;
+                txt.action = opt.options[i].action;
                 
                 this.addTxtBackground(this.container, {x: txt.x, y: txt.y, w: txt.textWidth, h: txt.textHeight});
                 this.container.add(txt);
