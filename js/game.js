@@ -112,8 +112,8 @@ GWBW.Game.prototype = {
               [1,       -1,     -100,   -3],
               [-2,      -1,     -3,      -100],
               [0,      0,     0,      0],       // burden
-              [0,       -3,     -2,      0],
-              [-3,      -2,     -1,      -1]
+              [-3,      -2,     -1,      -1],
+              [0,       -3,     -2,      0]
         ];
         this.CREW_ENTITIES = [
             "soldier",
@@ -267,6 +267,10 @@ GWBW.Game.prototype = {
             this[e.name].gameLink = this.game.state.getCurrentState();
             if (e.init)     this[e.name].custom_init   = GWBW.entities_methods[e.init].bind(this[e.name]);
             if (e.update)   this[e.name].custom_update = GWBW.entities_methods[e.update].bind(this[e.name]);
+            if (e.onclick)  {
+                this[e.name].custom_onclick            = GWBW.entities_methods[e.onclick].bind(this[e.name]);
+                this.input.onDown.add(this[e.name].custom_onclick, this[e.name]);
+            }
             
             this.entities.push(this[e.name]);
             if (this[e.name].custom_init) this[e.name].custom_init();
@@ -635,7 +639,7 @@ GWBW.Game.prototype = {
         this.rationsNeeded --;
         this.numActions --;
         this.numSurvivors --;
-    },
+    }, 
     sufferMoralePunch: function(id) {
         var moralePunch = this.MORALE_PUNCH[id];
         for (var q=0; q<4; q++) {
@@ -645,7 +649,7 @@ GWBW.Game.prototype = {
                 this.sanity[q] += moralePunch[q];
             }
         }
-    },
+    },    
     startMusic: function() {
         this.music.play();
         this.music.fadeTo(6000, 0.25);
@@ -659,5 +663,5 @@ GWBW.Game.prototype = {
         }
         this.dialogbox.isAnimated = true;
         anim.start();
-    }
+    }    
 };

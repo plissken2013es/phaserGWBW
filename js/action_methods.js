@@ -13,7 +13,7 @@ GWBW.action_methods = {
         } else {
             resultText += "casi puedo \n tocarlo con los dedos...";
         }
-        this.dialogbox.text = resultText;
+        this.dialogbox.text = resultText; 
         this.dialogbox.name = 'Sgt Burden';
         this.tweenDialog({ y: 0 }, 1, this.memberTalks);
     },
