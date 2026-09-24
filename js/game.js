@@ -179,8 +179,8 @@ GWBW.Game.prototype = {
             }, this);
     },
     update: function() {
-        this.crosshair.x = Math.floor(this.input.mousePointer.x - 8);
-        this.crosshair.y = Math.floor(this.input.mousePointer.y - 8);
+        this.crosshair.x = Math.floor(this.input.activePointer.x - 8);
+        this.crosshair.y = Math.floor(this.input.activePointer.y - 8);
         this.hoverTxt.x = this.crosshair.x + 8;
         this.hoverTxt.y = this.crosshair.y - 12;
         
@@ -196,7 +196,7 @@ GWBW.Game.prototype = {
         for (q=0, l=this.options.length; q<l; q++) {
             if (!this.isOver && this.day < 40 && this.numActions > 0 && this.dialogbox.y <= -this.dialogbox.height/2 && this.options.length && this.options[q].img.overlap(this.crosshair)) {
                 this.options[q].txt.tint = 0xffff00;
-                if (this.options.length && this.input.mousePointer.isDown && this.optionsEntity && this.optionsEntity.tweenFinished) {
+                if (this.options.length && this.input.activePointer.isDown && this.optionsEntity && this.optionsEntity.tweenFinished) {
                     this.options[q].txt.action.call(this);
                 }
                 break;
@@ -204,7 +204,7 @@ GWBW.Game.prototype = {
         }
         
         // destroy options, if user clicks on an empty zone of screen
-        if (this.options.length && this.input.mousePointer.isDown && this.optionsEntity && this.optionsEntity.tweenFinished) {
+        if (this.options.length && this.input.activePointer.isDown && this.optionsEntity && this.optionsEntity.tweenFinished) {
             this.optionsEntity.destroy();
             
             var timerTmp = this.time.create(false);
@@ -219,7 +219,7 @@ GWBW.Game.prototype = {
             var btn = this.buttons[prop];
             this.hoverTxt.text = "";
             if (!this.isOver && this.day < 40 && this.numActions > 0 && this.dialogbox.y <= -this.dialogbox.height/2 && !this.options.length && btn.overlap(this.crosshair)) {
-                if (!this.options.length && this.input.mousePointer.isDown && !this.optionsEntity) {
+                if (!this.options.length && this.input.activePointer.isDown && !this.optionsEntity) {
                     this.optionsEntity = new GWBW.Option(this, btn);
                     this.optionsEntity.createOptionsFor(btn);
                 }
@@ -243,7 +243,7 @@ GWBW.Game.prototype = {
         }
         
         // check click on gameOver
-        if (this.isOver && this.dialogbox.y <= -this.dialogbox.height/2 && this.input.mousePointer.isDown) {
+        if (this.isOver && this.dialogbox.y <= -this.dialogbox.height/2 && this.input.activePointer.isDown) {
             this.state.start("GWBW.Boot", true, true);
         }
         

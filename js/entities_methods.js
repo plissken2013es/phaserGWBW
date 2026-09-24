@@ -37,7 +37,7 @@ GWBW.entities_methods = {
             this.nameTxt.text = this.name;
             this.mainTxt.text = this.text;
         }
-        if (this.y >= 0 && this.gameLink.input.mousePointer.isDown) {
+        if (this.y >= 0 && this.gameLink.input.activePointer.isDown) {
             this.isAnimated = true;
             this.gameLink.add.tween(this).to({ y: -this.height }, 800, Phaser.Easing.Quadratic.Out, true)
                 .onComplete.add(function() {
@@ -85,8 +85,8 @@ GWBW.entities_methods = {
         
         if (!this.isTalking) {
             if (this.animations.currentAnim != this.animations._anims.shoot) {
-                if (this.gameLink.input.mousePointer.isDown && !this.gameLink.options.length && this.gameLink.dialogbox.y < -this.gameLink.dialogbox.height/2) {
-                    this.target = this.gameLink.input.mousePointer.x;
+                if (this.gameLink.input.activePointer.isDown && !this.gameLink.options.length && this.gameLink.dialogbox.y < -this.gameLink.dialogbox.height/2) {
+                    this.target = this.gameLink.input.activePointer.x;
                     if (this.x > this.target) {
                         this.body.velocity.x = -this.speed;
                         this.flip = false;

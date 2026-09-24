@@ -23,8 +23,8 @@ GWBW.Option.prototype = {
     createOptionsFor: function(btn) {
         this.container = this.gameLink.add.group();
         
-        var x = Math.floor(this.gameLink.input.mousePointer.x);
-        var y = Math.floor(this.gameLink.input.mousePointer.y);
+        var x = Math.floor(this.gameLink.input.activePointer.x);
+        var y = Math.floor(this.gameLink.input.activePointer.y);
         
         if (btn.infected) {
             for (var i=0; i < btn.infections.length; i++) {
