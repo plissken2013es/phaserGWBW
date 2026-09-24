@@ -181,6 +181,9 @@ GWBW.Game.prototype = {
     update: function() {
         this.crosshair.x = Math.floor(this.input.activePointer.x - 8);
         this.crosshair.y = Math.floor(this.input.activePointer.y - 8);
+        // Touch: the pointer jumps to the tap, but the crosshair's world bounds are only refreshed
+        // on render, so overlap() would test the previous tap position. Refresh them now.
+        this.crosshair.updateTransform();
         this.hoverTxt.x = this.crosshair.x + 8;
         this.hoverTxt.y = this.crosshair.y - 12;
         
